@@ -889,9 +889,13 @@ $btnDeleteSelectedVm.add_Click({
             Add-LogLine '[error] VBoxManage not found.'
             return
         }
-        Add-LogLine "[cleanup] Powering off and deleting '$selected'..."
-        & $vboxExe controlvm $selected poweroff 2>$null
-        Start-Sleep -Milliseconds 600
+        Add-LogLine "[cleanup] Deleting '$selected'..."
+        # Only power off if machine is actually running
+        $running = & $vboxExe list runningvms
+        if ($running -match [regex]::Escape($selected)) {
+            & $vboxExe controlvm $selected poweroff 2>&1 | Out-Null
+            Start-Sleep -Milliseconds 600
+        }
         $res = & $vboxExe unregistervm $selected --delete 2>&1
         Add-LogLine "[cleanup] $res"
         Add-LogLine "[cleanup] VM '$selected' uninstalled successfully."
