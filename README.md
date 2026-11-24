@@ -1,6 +1,6 @@
 <div align="center">
 
-![SAMadali Banner](assets/banner_animated.svg)
+![SAMadali Banner](assets/banner_animated.svg?v=2)
 
 # IT 311 Final Lab — Exam-Day Auto-Pilot & Toolkit
 
@@ -59,7 +59,7 @@
 
 <div align="center">
 
-![End-to-End Pipeline](assets/pipeline_animated.svg)
+![End-to-End Pipeline](assets/pipeline_animated.svg?v=2)
 
 </div>
 
