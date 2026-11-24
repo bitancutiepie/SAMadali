@@ -92,10 +92,15 @@ Or double-click `Start_Lab_UI.bat` to use the GUI.
 
 ## Exam-day workflow
 
+You can do everything from the **GUI launcher** or from the command line. Both paths use the same `config.psd1`.
+
+> **GUI path (recommended):** double-click `Start_Lab_UI.bat`. It reads `config.psd1`, lets you edit and save every field, and runs the build/pack steps with live output. See [GUI launcher](#gui-launcher).
+
 ### Step 0 — Edit `config.psd1`
-Confirm these match the instruction sheet **exactly**: VM name, RAM, disk, server name, password, share names, printer name.
+Confirm these match the instruction sheet **exactly**: VM name, RAM, disk, server name, password, share names, printer name. (Or use the launcher's `[ SAVE CONFIG ]` button.)
 
 ### Step 1 — Build the VM (Task Area 01)
+GUI: click `[ 1. BUILD VM ]`. CLI:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\1_build_vm.ps1 -Start
 ```
@@ -109,14 +114,18 @@ The builder creates the VM, sets RAM/disk/network, attaches the ISO, and prints 
 5. Set the Administrator password. Log in as Administrator.
 
 ### Step 3 — Mount the ISO and run the guest script (Task Areas 03–06)
-1. In the VM: **Devices → Optical Drives → Choose disk image** → `lab_scripts.iso`.
-2. Open PowerShell as Administrator:
+1. On the host, make sure `lab_scripts.iso` exists (GUI: `[ 2. PACK ISO ]`, or run `3_pack_iso.ps1`).
+2. In the VM: **Devices → Optical Drives → Choose disk image** → `lab_scripts.iso`.
+3. Open PowerShell as Administrator:
    ```powershell
    Set-ExecutionPolicy Bypass -Scope Process -Force
    D:\2_configure_server.ps1
    ```
    The script renames the server, prompts for a reboot, and exits. **This is expected.**
-3. After reboot, log in, re-mount the ISO, and run the script again. This pass completes password policy, users, shares, ACLs, printer, and verification.
+4. After reboot, log in, re-mount the ISO, and run the script again. This pass completes password policy, users, shares, ACLs, printer, and verification.
+
+> [!TIP]
+> Click `[ 3. COPY GUEST COMMAND ]` in the launcher to copy the guest command to your clipboard.
 
 ### Step 4 — Manual verification
 See [Manual steps you must do yourself](#manual-steps-you-must-do-yourself).
