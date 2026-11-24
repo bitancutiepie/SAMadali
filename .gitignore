@@ -1,0 +1,9 @@
+# Generated / large binaries
+*.iso
+__pycache__/
+launcher_error.log
+*.log
+
+# Temp test artifacts
+*.tmp
+.config_validate_*.psd1
