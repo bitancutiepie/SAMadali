@@ -1,115 +1,133 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 160" width="100%" height="160" shape-rendering="crispEdges">
   <defs>
+    <!-- Dark System Gradient -->
+    <linearGradient id="wfBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#090a0f" />
+      <stop offset="100%" stop-color="#040507" />
+    </linearGradient>
+
     <style>
-      @keyframes blinkCursor {
+      @keyframes cursorBlink {
         0%, 49% { opacity: 1; }
         50%, 100% { opacity: 0; }
       }
-      @keyframes pixelMarch {
+      @keyframes cableMarch {
         to { stroke-dashoffset: -16; }
       }
-      @keyframes floatCard {
+      @keyframes cardFloat {
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-2px); }
       }
-      .cursor-blink { animation: blinkCursor 1s infinite; }
-      .wire-step {
+      .cursor { animation: cursorBlink 1s infinite; }
+      .cable {
         stroke-dasharray: 4 4;
-        animation: pixelMarch 1s linear infinite;
+        animation: cableMarch 1s linear infinite;
       }
-      .card-1 { animation: floatCard 4s ease-in-out infinite 0s; }
-      .card-2 { animation: floatCard 4s ease-in-out infinite 0.5s; }
-      .card-3 { animation: floatCard 4s ease-in-out infinite 1s; }
-      .card-4 { animation: floatCard 4s ease-in-out infinite 1.5s; }
-      .retro-font {
+      .step-1 { animation: cardFloat 4s ease-in-out infinite 0s; }
+      .step-2 { animation: cardFloat 4s ease-in-out infinite 0.7s; }
+      .step-3 { animation: cardFloat 4s ease-in-out infinite 1.4s; }
+      .step-4 { animation: cardFloat 4s ease-in-out infinite 2.1s; }
+      .sys-font {
         font-family: 'Courier New', Courier, 'Lucida Console', Monaco, monospace;
       }
     </style>
   </defs>
 
-  <!-- Outer Retro Terminal Shell -->
-  <rect x="0" y="0" width="860" height="160" fill="#0c0d10" stroke="#2b2e38" stroke-width="2" />
+  <!-- Outer Deep System Window Shell -->
+  <rect x="1" y="1" width="858" height="158" fill="url(#wfBg)" stroke="#1e1e2d" stroke-width="2" />
   
-  <!-- Subtle CRT Scanlines -->
-  <g stroke="#ffffff" stroke-opacity="0.02" stroke-width="1">
-    <line x1="0" y1="20" x2="860" y2="20" />
-    <line x1="0" y1="40" x2="860" y2="40" />
-    <line x1="0" y1="60" x2="860" y2="60" />
-    <line x1="0" y1="80" x2="860" y2="80" />
-    <line x1="0" y1="100" x2="860" y2="100" />
-    <line x1="0" y1="120" x2="860" y2="120" />
-    <line x1="0" y1="140" x2="860" y2="140" />
+  <!-- Stepped Pixel Corners -->
+  <g fill="#7c3aed">
+    <!-- Top-Left -->
+    <rect x="3" y="3" width="6" height="2" />
+    <rect x="3" y="3" width="2" height="6" />
+    <rect x="7" y="7" width="2" height="2" />
+    <!-- Top-Right -->
+    <rect x="851" y="3" width="6" height="2" />
+    <rect x="855" y="3" width="2" height="6" />
+    <rect x="851" y="7" width="2" height="2" />
+    <!-- Bottom-Left -->
+    <rect x="3" y="155" width="6" height="2" />
+    <rect x="3" y="151" width="2" height="6" />
+    <rect x="7" y="151" width="2" height="2" />
+    <!-- Bottom-Right -->
+    <rect x="851" y="155" width="6" height="2" />
+    <rect x="855" y="151" width="2" height="6" />
+    <rect x="851" y="151" width="2" height="2" />
   </g>
 
-  <!-- Pixel Connecting Cable Streamers -->
-  <line class="wire-step" x1="195" y1="80" x2="235" y2="80" stroke="#7e8596" stroke-width="2" />
-  <line class="wire-step" x1="410" y1="80" x2="450" y2="80" stroke="#7e8596" stroke-width="2" />
-  <line class="wire-step" x1="625" y1="80" x2="665" y2="80" stroke="#ffffff" stroke-width="2" />
+  <!-- CRT Scanlines -->
+  <g stroke="#ffffff" stroke-opacity="0.015" stroke-width="1">
+    <line x1="2" y1="20" x2="858" y2="20" />
+    <line x1="2" y1="40" x2="858" y2="40" />
+    <line x1="2" y1="60" x2="858" y2="60" />
+    <line x1="2" y1="80" x2="858" y2="80" />
+    <line x1="2" y1="100" x2="858" y2="100" />
+    <line x1="2" y1="120" x2="858" y2="120" />
+    <line x1="2" y1="140" x2="858" y2="140" />
+  </g>
+
+  <!-- Connecting System Bus Cables -->
+  <line class="cable" x1="195" y1="80" x2="235" y2="80" stroke="#7c3aed" stroke-width="2" />
+  <line class="cable" x1="410" y1="80" x2="450" y2="80" stroke="#7c3aed" stroke-width="2" />
+  <line class="cable" x1="625" y1="80" x2="665" y2="80" stroke="#c084fc" stroke-width="2" />
 
   <!-- Node 1: CONFIG -->
-  <g class="card-1">
-    <!-- Pixel Card Body -->
-    <rect x="25" y="24" width="170" height="112" fill="#141720" stroke="#3d4354" stroke-width="2" />
-    <!-- Pixel Header Bar -->
-    <rect x="27" y="26" width="166" height="24" fill="#1c212e" />
-    <!-- Pixel Sliders Icon -->
-    <rect x="36" y="34" width="4" height="8" fill="#ffffff" />
-    <rect x="43" y="32" width="4" height="12" fill="#8d94a5" />
-    <rect x="50" y="36" width="4" height="6" fill="#ffffff" />
-    <text class="retro-font" x="62" y="42" fill="#ffffff" font-size="10.5" font-weight="700">01_CONFIG</text>
+  <g class="step-1">
+    <rect x="25" y="24" width="170" height="112" fill="#0c0d15" stroke="#2c2a42" stroke-width="1.5" />
+    <polygon points="25,24 33,24 25,32" fill="#7c3aed" />
+    <!-- Step Header -->
+    <rect x="27" y="26" width="166" height="22" fill="#131422" />
+    <polygon points="35,37 39,33 43,37 39,41" fill="#7c3aed" />
+    <text class="sys-font" x="48" y="41" fill="#f8fafc" font-size="10" font-weight="700">PHASE_01 // CFG</text>
     
     <!-- Content Lines -->
-    <text class="retro-font" x="38" y="70" fill="#cbd5e1" font-size="10" font-weight="bold">> SECTION</text>
-    <text class="retro-font" x="38" y="86" fill="#8d94a5" font-size="9">3106/3107/3108</text>
-    <text class="retro-font" x="38" y="104" fill="#8d94a5" font-size="9">> config.psd1</text>
-    <rect class="cursor-blink" x="122" y="96" width="5" height="9" fill="#ffffff" />
-    <text class="retro-font" x="38" y="122" fill="#525866" font-size="8">[OK] PARSED</text>
+    <text class="sys-font" x="36" y="68" fill="#c4b5fd" font-size="9" font-weight="bold">> SECTION SELECT</text>
+    <text class="sys-font" x="36" y="84" fill="#a1a1aa" font-size="8.5">3106 / 3107 / 3108</text>
+    <text class="sys-font" x="36" y="102" fill="#71717a" font-size="8.5">> config.psd1</text>
+    <rect class="cursor" x="110" y="94" width="4" height="8" fill="#a78bfa" />
+    <text class="sys-font" x="36" y="122" fill="#585676" font-size="7.5">[STATUS: VERIFIED]</text>
   </g>
 
   <!-- Node 2: PACK ISO -->
-  <g class="card-2">
-    <rect x="240" y="24" width="170" height="112" fill="#141720" stroke="#3d4354" stroke-width="2" />
-    <rect x="242" y="26" width="166" height="24" fill="#1c212e" />
-    <!-- Pixel Floppy/Disc Icon -->
-    <rect x="251" y="32" width="12" height="12" fill="#141720" stroke="#ffffff" stroke-width="1.5" />
-    <rect x="255" y="34" width="4" height="4" fill="#ffffff" />
-    <text class="retro-font" x="272" y="42" fill="#ffffff" font-size="10.5" font-weight="700">02_PACK_ISO</text>
+  <g class="step-2">
+    <rect x="240" y="24" width="170" height="112" fill="#0c0d15" stroke="#2c2a42" stroke-width="1.5" />
+    <polygon points="240,24 248,24 240,32" fill="#7c3aed" />
+    <rect x="242" y="26" width="166" height="22" fill="#131422" />
+    <polygon points="250,37 254,33 258,37 254,41" fill="#7c3aed" />
+    <text class="sys-font" x="263" y="41" fill="#f8fafc" font-size="10" font-weight="700">PHASE_02 // ISO</text>
     
-    <text class="retro-font" x="253" y="70" fill="#cbd5e1" font-size="10" font-weight="bold">> IMAPI2FS</text>
-    <text class="retro-font" x="253" y="86" fill="#8d94a5" font-size="9">scripts.iso</text>
-    <text class="retro-font" x="253" y="104" fill="#8d94a5" font-size="9">> staged: 3 files</text>
-    <text class="retro-font" x="253" y="122" fill="#525866" font-size="8">[OK] 118 KB</text>
+    <text class="sys-font" x="251" y="68" fill="#c4b5fd" font-size="9" font-weight="bold">> IMAPI2FS BUILD</text>
+    <text class="sys-font" x="251" y="84" fill="#a1a1aa" font-size="8.5">lab_scripts.iso</text>
+    <text class="sys-font" x="251" y="102" fill="#71717a" font-size="8.5">> Staged: 3 files</text>
+    <text class="sys-font" x="251" y="122" fill="#585676" font-size="7.5">[STATUS: 118 KB OK]</text>
   </g>
 
   <!-- Node 3: BUILD VM -->
-  <g class="card-3">
-    <rect x="455" y="24" width="170" height="112" fill="#141720" stroke="#3d4354" stroke-width="2" />
-    <rect x="457" y="26" width="166" height="24" fill="#1c212e" />
-    <!-- Pixel PC Monitor Icon -->
-    <rect x="466" y="32" width="14" height="9" fill="#141720" stroke="#ffffff" stroke-width="1.5" />
-    <rect x="471" y="42" width="4" height="2" fill="#ffffff" />
-    <text class="retro-font" x="488" y="42" fill="#ffffff" font-size="10.5" font-weight="700">03_BUILD_VM</text>
+  <g class="step-3">
+    <rect x="455" y="24" width="170" height="112" fill="#0c0d15" stroke="#2c2a42" stroke-width="1.5" />
+    <polygon points="455,24 463,24 455,32" fill="#7c3aed" />
+    <rect x="457" y="26" width="166" height="22" fill="#131422" />
+    <polygon points="465,37 469,33 473,37 469,41" fill="#7c3aed" />
+    <text class="sys-font" x="478" y="41" fill="#f8fafc" font-size="10" font-weight="700">PHASE_03 // VM</text>
     
-    <text class="retro-font" x="468" y="70" fill="#cbd5e1" font-size="10" font-weight="bold">> VBOX 7.x</text>
-    <text class="retro-font" x="468" y="86" fill="#8d94a5" font-size="9">RAM: 4096 MB</text>
-    <text class="retro-font" x="468" y="104" fill="#8d94a5" font-size="9">NIC: Bridged</text>
-    <text class="retro-font" x="468" y="122" fill="#525866" font-size="8">[OK] REGISTERED</text>
+    <text class="sys-font" x="466" y="68" fill="#c4b5fd" font-size="9" font-weight="bold">> VBOX REGISTER</text>
+    <text class="sys-font" x="466" y="84" fill="#a1a1aa" font-size="8.5">4096MB RAM • 30GB</text>
+    <text class="sys-font" x="466" y="102" fill="#71717a" font-size="8.5">> NIC: Bridged</text>
+    <text class="sys-font" x="466" y="122" fill="#585676" font-size="7.5">[STATUS: ATTACHED]</text>
   </g>
 
   <!-- Node 4: EVALUATE -->
-  <g class="card-4">
-    <rect x="670" y="24" width="165" height="112" fill="#181c26" stroke="#ffffff" stroke-width="2" />
-    <rect x="672" y="26" width="161" height="24" fill="#ffffff" />
-    <!-- Pixel Check Icon -->
-    <rect x="681" y="37" width="2" height="4" fill="#141720" />
-    <rect x="683" y="39" width="2" height="4" fill="#141720" />
-    <rect x="685" y="35" width="2" height="8" fill="#141720" />
-    <rect x="687" y="33" width="2" height="4" fill="#141720" />
-    <text class="retro-font" x="696" y="42" fill="#141720" font-size="10.5" font-weight="900">04_VERIFY</text>
+  <g class="step-4">
+    <rect x="670" y="24" width="165" height="112" fill="#11111f" stroke="#7c3aed" stroke-width="1.5" />
+    <polygon points="670,24 678,24 670,32" fill="#c084fc" />
+    <rect x="672" y="26" width="161" height="22" fill="#1e1838" />
+    <polygon points="680,37 684,33 688,37 684,41" fill="#c084fc" />
+    <text class="sys-font" x="693" y="41" fill="#ffffff" font-size="10" font-weight="900">PHASE_04 // 50 PTS</text>
     
-    <text class="retro-font" x="683" y="70" fill="#ffffff" font-size="10.5" font-weight="bold">> SCORE: 50/50</text>
-    <text class="retro-font" x="683" y="86" fill="#cbd5e1" font-size="9">29/29 PASSED</text>
-    <text class="retro-font" x="683" y="104" fill="#94a3b8" font-size="9">> verify_exam</text>
-    <text class="retro-font" x="683" y="122" fill="#cbd5e1" font-size="8.5">[EXAM READY]</text>
+    <text class="sys-font" x="681" y="68" fill="#ffffff" font-size="10" font-weight="900">> SCORE: 50 / 50</text>
+    <text class="sys-font" x="681" y="84" fill="#c4b5fd" font-size="8.5">29 / 29 Check Items</text>
+    <text class="sys-font" x="681" y="102" fill="#a1a1aa" font-size="8.5">> verify_exam.ps1</text>
+    <text class="sys-font" x="681" y="122" fill="#a78bfa" font-size="8" font-weight="bold">[QUEST COMPLETE]</text>
   </g>
 </svg>

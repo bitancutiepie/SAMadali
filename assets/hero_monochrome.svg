@@ -1,114 +1,170 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 220" width="100%" height="220" shape-rendering="crispEdges">
   <defs>
+    <!-- Dark System UI Gradient -->
+    <linearGradient id="sysBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#090a0f" />
+      <stop offset="100%" stop-color="#040507" />
+    </linearGradient>
+
+    <!-- Subtle Violet Atmospheric Glow -->
+    <filter id="soloGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#7c3aed" flood-opacity="0.35" />
+    </filter>
+
     <style>
-      @keyframes softFloat {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-3px); }
+      @keyframes runePulse {
+        0%, 100% { opacity: 0.25; }
+        50% { opacity: 0.85; }
       }
-      @keyframes blinkCursor {
+      @keyframes cursorBlink {
         0%, 49% { opacity: 1; }
         50%, 100% { opacity: 0; }
       }
-      @keyframes cableFlow {
+      @keyframes streamStep {
         to { stroke-dashoffset: -16; }
       }
-      .retro-float { animation: softFloat 5s ease-in-out infinite; }
-      .cursor-blink { animation: blinkCursor 1s infinite; }
-      .cable-stream {
+      .rune-glow { animation: runePulse 4s ease-in-out infinite; }
+      .cursor { animation: cursorBlink 1s infinite; }
+      .data-stream {
         stroke-dasharray: 4 4;
-        animation: cableFlow 1.2s linear infinite;
+        animation: streamStep 1.2s linear infinite;
       }
-      .pixel-font {
+      .sys-font {
         font-family: 'Courier New', Courier, 'Lucida Console', Monaco, monospace;
       }
     </style>
   </defs>
 
-  <!-- Outer Dark Shell -->
-  <rect x="0" y="0" width="860" height="220" fill="#0c0d10" stroke="#2b2e38" stroke-width="2" />
+  <!-- Outer Deep System Window Shell -->
+  <rect x="1" y="1" width="858" height="218" fill="url(#sysBg)" stroke="#1e1e2d" stroke-width="2" />
   
-  <!-- CRT Scanlines (Subtle Monochrome) -->
-  <g stroke="#ffffff" stroke-opacity="0.02" stroke-width="1">
-    <line x1="0" y1="20" x2="860" y2="20" />
-    <line x1="0" y1="45" x2="860" y2="45" />
-    <line x1="0" y1="70" x2="860" y2="70" />
-    <line x1="0" y1="95" x2="860" y2="95" />
-    <line x1="0" y1="120" x2="860" y2="120" />
-    <line x1="0" y1="145" x2="860" y2="145" />
-    <line x1="0" y1="170" x2="860" y2="170" />
-    <line x1="0" y1="195" x2="860" y2="195" />
+  <!-- Stepped Pixel Corners (Solo Leveling System Window Style) -->
+  <g fill="#7c3aed">
+    <!-- Top-Left -->
+    <rect x="3" y="3" width="6" height="2" />
+    <rect x="3" y="3" width="2" height="6" />
+    <rect x="7" y="7" width="2" height="2" />
+    <!-- Top-Right -->
+    <rect x="851" y="3" width="6" height="2" />
+    <rect x="855" y="3" width="2" height="6" />
+    <rect x="851" y="7" width="2" height="2" />
+    <!-- Bottom-Left -->
+    <rect x="3" y="215" width="6" height="2" />
+    <rect x="3" y="211" width="2" height="6" />
+    <rect x="7" y="211" width="2" height="2" />
+    <!-- Bottom-Right -->
+    <rect x="851" y="215" width="6" height="2" />
+    <rect x="855" y="211" width="2" height="6" />
+    <rect x="851" y="211" width="2" height="2" />
   </g>
 
-  <!-- Top Retro Terminal Bar -->
-  <rect x="2" y="2" width="856" height="26" fill="#141720" stroke="#2b2e38" stroke-width="1" />
-  <rect x="14" y="9" width="8" height="8" fill="#ffffff" stroke-opacity="0.8" />
-  <rect x="26" y="9" width="8" height="8" fill="#525866" />
-  <rect x="38" y="9" width="8" height="8" fill="#303542" />
-  <text class="pixel-font" x="56" y="19" fill="#9da4b5" font-size="10" font-weight="700">TERMINAL://SAM_LAB/IT311_EXAM_TOOLKIT</text>
+  <!-- Subtle CRT Scanlines -->
+  <g stroke="#ffffff" stroke-opacity="0.015" stroke-width="1">
+    <line x1="2" y1="28" x2="858" y2="28" />
+    <line x1="2" y1="56" x2="858" y2="56" />
+    <line x1="2" y1="84" x2="858" y2="84" />
+    <line x1="2" y1="112" x2="858" y2="112" />
+    <line x1="2" y1="140" x2="858" y2="140" />
+    <line x1="2" y1="168" x2="858" y2="168" />
+    <line x1="2" y1="196" x2="858" y2="196" />
+  </g>
 
-  <!-- Main Floating Hero Section -->
-  <g class="retro-float">
-    <!-- Pixel Server Icon Container -->
-    <rect x="30" y="46" width="68" height="74" fill="#161922" stroke="#3d4354" stroke-width="2" />
-    <rect x="32" y="48" width="64" height="16" fill="#1f2430" />
-    <rect x="38" y="54" width="4" height="4" fill="#ffffff" />
-    <rect x="46" y="54" width="44" height="4" fill="#383e4d" />
+  <!-- Top System Header Bar -->
+  <rect x="2" y="2" width="856" height="25" fill="#0d0e17" stroke="#252438" stroke-width="1" />
+  
+  <!-- System Window Diamonds -->
+  <polygon points="16,14 20,10 24,14 20,18" fill="#7c3aed" />
+  <polygon points="28,14 31,11 34,14 31,17" fill="#4c1d95" />
+  
+  <text class="sys-font" x="44" y="18" fill="#a78bfa" font-size="9.5" font-weight="700" letter-spacing="1.5">SYSTEM // NOTIFICATION: QUEST READY</text>
+  <text class="sys-font" x="720" y="18" fill="#6d6a8a" font-size="8.5">RANK [S] TOOLKIT</text>
+
+  <!-- Center Hero Area -->
+  <g transform="translate(32, 45)">
+    <!-- Solo Leveling Monolith Rune Core Icon -->
+    <rect x="0" y="0" width="70" height="74" fill="#0e0f18" stroke="#312e4d" stroke-width="2" />
+    <!-- Stepped Inner Frame -->
+    <rect x="4" y="4" width="62" height="66" fill="#090a12" stroke="#1d1c30" stroke-width="1" />
     
-    <rect x="32" y="67" width="64" height="16" fill="#1f2430" />
-    <rect x="38" y="73" width="4" height="4" fill="#ffffff" />
-    <rect x="46" y="73" width="44" height="4" fill="#383e4d" />
+    <!-- Monolith Core Crystals & Layers -->
+    <polygon points="35,12 47,28 35,44 23,28" fill="#141324" stroke="#a78bfa" stroke-width="1.5" />
+    <polygon points="35,18 42,28 35,38 28,28" fill="#2e1065" stroke="#c084fc" stroke-width="1" />
+    <rect x="34" y="27" width="2" height="2" fill="#ffffff" />
+    
+    <!-- Core Horizontal Circuit Tiers -->
+    <line x1="14" y1="52" x2="56" y2="52" stroke="#4c1d95" stroke-width="1.5" />
+    <line x1="18" y1="58" x2="52" y2="58" stroke="#7c3aed" stroke-width="1" />
+    <rect x="22" y="62" width="26" height="4" fill="#1e1b4b" />
+    <text class="sys-font" x="25" y="65" fill="#a78bfa" font-size="6" font-weight="bold">CORE_01</text>
 
-    <rect x="32" y="86" width="64" height="16" fill="#1f2430" />
-    <rect x="38" y="92" width="4" height="4" fill="#ffffff" />
-    <rect x="46" y="92" width="44" height="4" fill="#383e4d" />
-
-    <rect x="32" y="105" width="64" height="13" fill="#141720" />
-    <text class="pixel-font" x="38" y="115" fill="#525866" font-size="8">[VBOX-7]</text>
-
-    <!-- Header Typography -->
-    <text class="pixel-font" x="115" y="72" fill="#ffffff" font-size="24" font-weight="900" letter-spacing="1">
-      SAMadali <tspan fill="#8a90a0" font-size="18" font-weight="600">[IT 311]</tspan>
+    <!-- Title & System Description -->
+    <text class="sys-font" x="90" y="24" fill="#f8fafc" font-size="22" font-weight="900" letter-spacing="1.5">
+      SAMadali <tspan fill="#a78bfa" font-size="16" font-weight="700">[IT 311]</tspan>
     </text>
-    <text class="pixel-font" x="115" y="96" fill="#9da4b5" font-size="11.5" font-weight="500">
-      > 1-Click Host Auto-Pilot &amp; In-VM Rubric Evaluator
+    
+    <text class="sys-font" x="90" y="46" fill="#c4b5fd" font-size="11" font-weight="600" letter-spacing="0.5">
+      > SYSTEM AUTO-PILOT : FINAL LAB PROVISIONING ENGINE
     </text>
-    <text class="pixel-font" x="115" y="114" fill="#64748b" font-size="10.5">
-      > Mode: Pure Soft Monochrome Retro  •  Status: READY
+    
+    <text class="sys-font" x="90" y="64" fill="#71717a" font-size="9.5">
+      > Class Sections: 3106 / 3107 / 3108  •  Environment: Isolated Guest
     </text>
-    <rect class="cursor-blink" x="480" y="104" width="6" height="11" fill="#ffffff" />
+    
+    <rect class="cursor" x="510" y="55" width="6" height="10" fill="#a78bfa" />
   </g>
 
-  <!-- Retro Rubric Status Badge (Top Right) -->
-  <g>
-    <rect x="668" y="46" width="162" height="34" fill="#161922" stroke="#ffffff" stroke-width="1.5" />
-    <rect x="674" y="58" width="6" height="6" fill="#ffffff" />
-    <text class="pixel-font" x="688" y="68" fill="#ffffff" font-size="11" font-weight="bold">SCORE: 50/50 PTS</text>
+  <!-- Quest Reward Pill (Top Right) -->
+  <g transform="translate(670, 45)">
+    <rect x="0" y="0" width="158" height="34" fill="#0e0f18" stroke="#7c3aed" stroke-width="1.5" />
+    <rect x="4" y="4" width="4" height="4" fill="#c084fc" />
+    <text class="sys-font" x="16" y="16" fill="#a78bfa" font-size="8" font-weight="700">MAX EVALUATION</text>
+    <text class="sys-font" x="16" y="28" fill="#ffffff" font-size="11" font-weight="900" letter-spacing="1">50 / 50 PTS</text>
+    <polygon points="144,17 150,11 150,23" fill="#7c3aed" />
   </g>
 
-  <!-- 4 Retro Function Badges (Bottom Row) -->
-  <g transform="translate(30, 145)">
-    <!-- Badge 1: 1-Click Auto-Pilot -->
-    <rect x="0" y="0" width="185" height="52" fill="#141720" stroke="#333745" stroke-width="1.5" />
-    <rect x="12" y="12" width="6" height="6" fill="#ffffff" />
-    <text class="pixel-font" x="26" y="24" fill="#ffffff" font-size="10" font-weight="bold">HOST AUTO-PILOT</text>
-    <text class="pixel-font" x="12" y="40" fill="#787e91" font-size="8.5">> 1-click VM deploy</text>
+  <!-- Connecting System Bus Line -->
+  <line class="data-stream" x1="32" y1="135" x2="828" y2="135" stroke="#3b3759" stroke-width="1.5" />
 
-    <!-- Badge 2: ReaLTaiizor Dark Interface -->
-    <rect x="205" y="0" width="185" height="52" fill="#141720" stroke="#333745" stroke-width="1.5" />
-    <rect x="217" y="12" width="6" height="6" fill="#ffffff" />
-    <text class="pixel-font" x="231" y="24" fill="#ffffff" font-size="10" font-weight="bold">REALTAIIZOR UI</text>
-    <text class="pixel-font" x="217" y="40" fill="#787e91" font-size="8.5">> CrownForm layout</text>
+  <!-- 4 Stepped System Modules (Bottom Row) -->
+  <g transform="translate(32, 146)">
+    <!-- Tile 1: Auto-Pilot -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="188" height="50" fill="#0d0e17" stroke="#252438" stroke-width="1.5" />
+      <polygon points="0,0 8,0 0,8" fill="#7c3aed" />
+      <text class="sys-font" x="12" y="18" fill="#f8fafc" font-size="9.5" font-weight="bold">QUEST://AUTO-PILOT</text>
+      <text class="sys-font" x="12" y="32" fill="#a1a1aa" font-size="8.5">1-Click Host Execution</text>
+      <text class="sys-font" x="12" y="42" fill="#585676" font-size="7.5">[VBox Provisioning]</text>
+      <rect x="174" y="38" width="4" height="4" fill="#7c3aed" />
+    </g>
 
-    <!-- Badge 3: TDD Verified Suite -->
-    <rect x="410" y="0" width="185" height="52" fill="#141720" stroke="#333745" stroke-width="1.5" />
-    <rect x="422" y="12" width="6" height="6" fill="#ffffff" />
-    <text class="pixel-font" x="436" y="24" fill="#ffffff" font-size="10" font-weight="bold">TDD VERIFIED</text>
-    <text class="pixel-font" x="422" y="40" fill="#787e91" font-size="8.5">> 7/7 Pester tests</text>
+    <!-- Tile 2: ReaLTaiizor Dark Interface -->
+    <g transform="translate(204, 0)">
+      <rect x="0" y="0" width="188" height="50" fill="#0d0e17" stroke="#252438" stroke-width="1.5" />
+      <polygon points="0,0 8,0 0,8" fill="#7c3aed" />
+      <text class="sys-font" x="12" y="18" fill="#f8fafc" font-size="9.5" font-weight="bold">INTERFACE://REALTAIIZOR</text>
+      <text class="sys-font" x="12" y="32" fill="#a1a1aa" font-size="8.5">Crown &amp; Poison Form</text>
+      <text class="sys-font" x="12" y="42" fill="#585676" font-size="7.5">[Zero UI Overlap]</text>
+      <rect x="174" y="38" width="4" height="4" fill="#7c3aed" />
+    </g>
 
-    <!-- Badge 4: Offline Runtime -->
-    <rect x="615" y="0" width="185" height="52" fill="#141720" stroke="#333745" stroke-width="1.5" />
-    <rect x="627" y="12" width="6" height="6" fill="#ffffff" />
-    <text class="pixel-font" x="641" y="24" fill="#ffffff" font-size="10" font-weight="bold">ZERO INTERNET</text>
-    <text class="pixel-font" x="627" y="40" fill="#787e91" font-size="8.5">> 100% offline exam</text>
+    <!-- Tile 3: TDD Verified Suite -->
+    <g transform="translate(408, 0)">
+      <rect x="0" y="0" width="188" height="50" fill="#0d0e17" stroke="#252438" stroke-width="1.5" />
+      <polygon points="0,0 8,0 0,8" fill="#7c3aed" />
+      <text class="sys-font" x="12" y="18" fill="#f8fafc" font-size="9.5" font-weight="bold">DUNGEON://TDD_TESTS</text>
+      <text class="sys-font" x="12" y="32" fill="#a1a1aa" font-size="8.5">7/7 Pester Assertions</text>
+      <text class="sys-font" x="12" y="42" fill="#585676" font-size="7.5">[100% Passed Clean]</text>
+      <rect x="174" y="38" width="4" height="4" fill="#7c3aed" />
+    </g>
+
+    <!-- Tile 4: Zero External Dependency -->
+    <g transform="translate(612, 0)">
+      <rect x="0" y="0" width="184" height="50" fill="#0d0e17" stroke="#252438" stroke-width="1.5" />
+      <polygon points="0,0 8,0 0,8" fill="#7c3aed" />
+      <text class="sys-font" x="12" y="18" fill="#f8fafc" font-size="9.5" font-weight="bold">SECURITY://OFFLINE</text>
+      <text class="sys-font" x="12" y="32" fill="#a1a1aa" font-size="8.5">Air-Gapped Operation</text>
+      <text class="sys-font" x="12" y="42" fill="#585676" font-size="7.5">[Zero Web Leaks]</text>
+      <rect x="170" y="38" width="4" height="4" fill="#7c3aed" />
+    </g>
   </g>
 </svg>
