@@ -1,6 +1,18 @@
+<div align="center">
+
+![SAMadali Banner](assets/banner_animated.svg)
+
 # IT 311 Final Lab — Exam-Day Auto-Pilot & Toolkit
 
-A fully automated, streamlined toolkit for the **IT 311 System Administration Final Lab** (50 points), built on **VirtualBox + Windows Server 2022**.
+**A high-performance, automated toolkit for the IT 311 System Administration Final Lab (50 points).**  
+*Fusing Black-and-White Glassmorphism + Claymorphism powered by ReaLTaiizor and backed by Test-Driven Development.*
+
+[![Rubric Score](https://img.shields.io/badge/Rubric%20Score-50%2F50%20Points-00ffaa?style=for-the-badge&logo=windows-terminal&logoColor=white)](#rubric-checklist-50-points)
+[![Host Pipeline](https://img.shields.io/badge/Auto--Pilot-1--Click%20Ready-38bdf8?style=for-the-badge&logo=virtualbox&logoColor=white)](#quick-start-host-auto-pilot)
+[![Offline Ready](https://img.shields.io/badge/Offline%20Exam-Zero%20Internet-f8fafc?style=for-the-badge&logo=powershell&logoColor=black)](#prerequisites)
+[![Tests Passed](https://img.shields.io/badge/TDD%20Tests-7%2F7%20Passing-00ffaa?style=for-the-badge&logo=checkmarx&logoColor=white)](#test-driven-development-tdd-suite)
+
+</div>
 
 > [!NOTE]
 > Engineered and tested on **Windows 11 Home Single Language (64-bit)** with **VirtualBox 7.2.16** and **Windows Server 2022 Datacenter/Standard Evaluation ISO**. Fuses a modern **Glassmorphism + Claymorphism** UI styled with **ReaLTaiizor**, backed by an automated 1-click host auto-pilot pipeline and an in-VM 50-point rubric evaluator.
@@ -44,6 +56,12 @@ A fully automated, streamlined toolkit for the **IT 311 System Administration Fi
 ---
 
 ## Architecture & Workflow
+
+<div align="center">
+
+![End-to-End Pipeline](assets/pipeline_animated.svg)
+
+</div>
 
 ```mermaid
 flowchart TD

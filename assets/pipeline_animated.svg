@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 160" width="100%" height="160">
+  <defs>
+    <!-- Dark Clay Gradients -->
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e2330" />
+      <stop offset="100%" stop-color="#12151e" />
+    </linearGradient>
+
+    <!-- Glowing Active Flow Gradient -->
+    <linearGradient id="flowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#00ffaa" />
+    </linearGradient>
+
+    <filter id="shadowFilter" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+
+    <style>
+      @keyframes pulseNode {
+        0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #38bdf8); }
+        50% { transform: scale(1.05); filter: drop-shadow(0 0 8px #38bdf8); }
+      }
+      @keyframes flowDash {
+        to { stroke-dashoffset: -32; }
+      }
+      @keyframes lightSweep {
+        0% { transform: translateX(0px); opacity: 0; }
+        20% { opacity: 1; }
+        80% { opacity: 1; }
+        100% { transform: translateX(850px); opacity: 0; }
+      }
+      .node-1 { animation: pulseNode 3s ease-in-out infinite 0s; transform-origin: 105px 80px; }
+      .node-2 { animation: pulseNode 3s ease-in-out infinite 0.75s; transform-origin: 335px 80px; }
+      .node-3 { animation: pulseNode 3s ease-in-out infinite 1.5s; transform-origin: 565px 80px; }
+      .node-4 { animation: pulseNode 3s ease-in-out infinite 2.25s; transform-origin: 795px 80px; }
+      .data-pipe {
+        stroke-dasharray: 8 8;
+        animation: flowDash 1.5s linear infinite;
+      }
+    </style>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect x="0" y="0" width="900" height="160" rx="16" fill="#0b0e14" stroke="#1f2533" stroke-width="1.5" />
+
+  <!-- Animated Data Connection Streams -->
+  <line class="data-pipe" x1="190" y1="80" x2="250" y2="80" stroke="#38bdf8" stroke-width="2.5" />
+  <line class="data-pipe" x1="420" y1="80" x2="480" y2="80" stroke="#818cf8" stroke-width="2.5" />
+  <line class="data-pipe" x1="650" y1="80" x2="710" y2="80" stroke="#00ffaa" stroke-width="2.5" />
+
+  <!-- Stage 1: Configure & Section -->
+  <g class="node-1">
+    <rect x="25" y="30" width="165" height="100" rx="14" fill="url(#cardGrad)" stroke="#333c4f" stroke-width="1.5" filter="url(#shadowFilter)" />
+    <circle cx="50" cy="55" r="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2" />
+    <text x="47" y="59" fill="#38bdf8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="800">1</text>
+    <text x="68" y="59" fill="#f8fafc" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="700">1-CLICK CONFIG</text>
+    <text x="40" y="85" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">Section Picker</text>
+    <text x="40" y="103" fill="#64748b" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">3106 / 3107 / 3108</text>
+  </g>
+
+  <!-- Stage 2: Pack ISO -->
+  <g class="node-2">
+    <rect x="255" y="30" width="165" height="100" rx="14" fill="url(#cardGrad)" stroke="#333c4f" stroke-width="1.5" filter="url(#shadowFilter)" />
+    <circle cx="280" cy="55" r="10" fill="#1e293b" stroke="#818cf8" stroke-width="2" />
+    <text x="277" y="59" fill="#818cf8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="800">2</text>
+    <text x="298" y="59" fill="#f8fafc" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="700">PACK ISO</text>
+    <text x="270" y="85" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">lab_scripts.iso</text>
+    <text x="270" y="103" fill="#64748b" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">IMAPI2FS Staging</text>
+  </g>
+
+  <!-- Stage 3: Build & Launch VM -->
+  <g class="node-3">
+    <rect x="485" y="30" width="165" height="100" rx="14" fill="url(#cardGrad)" stroke="#333c4f" stroke-width="1.5" filter="url(#shadowFilter)" />
+    <circle cx="510" cy="55" r="10" fill="#1e293b" stroke="#a7f3d0" stroke-width="2" />
+    <text x="507" y="59" fill="#a7f3d0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="800">3</text>
+    <text x="528" y="59" fill="#f8fafc" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="700">BUILD VM</text>
+    <text x="500" y="85" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">4GB RAM • Bridged</text>
+    <text x="500" y="103" fill="#64748b" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">VBox Auto-Launch</text>
+  </g>
+
+  <!-- Stage 4: 50-Point In-VM Verification -->
+  <g class="node-4">
+    <rect x="715" y="30" width="160" height="100" rx="14" fill="url(#cardGrad)" stroke="#00ffaa" stroke-width="1.5" filter="url(#shadowFilter)" />
+    <circle cx="740" cy="55" r="10" fill="#064e3b" stroke="#00ffaa" stroke-width="2" />
+    <text x="736" y="59" fill="#00ffaa" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="800">✓</text>
+    <text x="758" y="59" fill="#00ffaa" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="800">50 / 50 PTS</text>
+    <text x="730" y="85" fill="#e2e8f0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5">Rubric Evaluator</text>
+    <text x="730" y="103" fill="#6ee7b7" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">verify_exam.ps1</text>
+  </g>
+</svg>
