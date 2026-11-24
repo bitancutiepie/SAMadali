@@ -409,9 +409,11 @@ try {
         '--boot1', 'dvd',
         '--boot2', 'disk',
         '--boot3', 'none',
-        '--boot4', 'none'
+        '--boot4', 'none',
+        '--clipboard-mode', 'bidirectional',
+        '--draganddrop', 'bidirectional'
     ) | Out-Null
-    Write-Ok "Memory set to $ramMb MB and boot order set to DVD first."
+    Write-Ok "Memory set to $ramMb MB, boot order DVD first, and clipboard bidirectional."
 
     # ------------------------------------------------------------------
     # Network
