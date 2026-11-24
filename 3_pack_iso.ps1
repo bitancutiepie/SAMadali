@@ -199,11 +199,12 @@ function Assert-IsoContents {
 
     $listing = (& $sevenZip.Source l -ba $IsoPath 2>&1 | ForEach-Object { [string]$_ })
     $found = @{}
+    $wantedFiles = @('config.psd1', '2_configure_server.ps1', 'verify_exam.ps1')
     foreach ($line in $listing) {
         $text = $line.Trim()
         if (-not $text) { continue }
         $name = ($text -split '\s+')[-1]
-        foreach ($wanted in @('config.psd1', '2_configure_server.ps1')) {
+        foreach ($wanted in $wantedFiles) {
             if ($name -ieq $wanted) { $found[$wanted] = $true }
             elseif ($name -imatch ('[\\/]' + [regex]::Escape($wanted) + '$')) {
                 throw "ISO verification failed: '$wanted' is inside a subfolder ($name), not at the ISO root."
@@ -211,13 +212,13 @@ function Assert-IsoContents {
         }
     }
     $missing = @()
-    foreach ($name in @('config.psd1', '2_configure_server.ps1')) {
+    foreach ($name in $wantedFiles) {
         if (-not $found.ContainsKey($name)) { $missing += $name }
     }
     if ($missing.Count -gt 0) {
         throw ("ISO verification failed; missing from image root: {0}" -f ($missing -join ', '))
     }
-    Write-Ok 'ISO contents verified with 7-Zip: config.psd1 and 2_configure_server.ps1 are at the root.'
+    Write-Ok 'ISO contents verified with 7-Zip: config.psd1, 2_configure_server.ps1, and verify_exam.ps1 are at the root.'
 }
 
 try {
@@ -254,7 +255,13 @@ try {
     try {
         Copy-Item -LiteralPath $ConfigPath -Destination (Join-Path $staging 'config.psd1') -Force
         Copy-Item -LiteralPath $ServerScriptPath -Destination (Join-Path $staging '2_configure_server.ps1') -Force
-        Write-Ok 'Staged config.psd1 and 2_configure_server.ps1.'
+        $verifyScript = Join-Path $PSScriptRoot 'verify_exam.ps1'
+        if (Test-Path -LiteralPath $verifyScript) {
+            Copy-Item -LiteralPath $verifyScript -Destination (Join-Path $staging 'verify_exam.ps1') -Force
+            Write-Ok 'Staged config.psd1, 2_configure_server.ps1, and verify_exam.ps1.'
+        } else {
+            Write-Ok 'Staged config.psd1 and 2_configure_server.ps1.'
+        }
 
         if (Test-Path -LiteralPath $temporaryIso) { Remove-Item -LiteralPath $temporaryIso -Force }
 
@@ -282,6 +289,9 @@ try {
         $size = (Get-Item -LiteralPath $temporaryIso).Length
         if ($size -lt 4096) { throw "ISO file is suspiciously small ($size bytes)." }
 
+        if (Test-Path -LiteralPath $outputFull) {
+            Remove-Item -LiteralPath $outputFull -Force
+        }
         Move-Item -LiteralPath $temporaryIso -Destination $outputFull -Force
         Write-Ok ("Created {0} ({1:N0} bytes)." -f $outputFull, $size)
 

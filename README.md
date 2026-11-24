@@ -1,230 +1,214 @@
-# IT 311 Final Lab — Exam-Day Toolkit
+# IT 311 Final Lab — Exam-Day Auto-Pilot & Toolkit
 
-A parameterized toolkit for the **IT 311 System Administration Final Lab** (50 points), built on **VirtualBox + Windows Server 2022**.
+A fully automated, streamlined toolkit for the **IT 311 System Administration Final Lab** (50 points), built on **VirtualBox + Windows Server 2022**.
 
 > [!NOTE]
-> Built and validated on **Windows 11 Home Single Language (64-bit)** with **VirtualBox 7.2.16** and the **Windows Server 2022 Evaluation ISO**. The host builder auto-detects your environment, so it works on other Windows hosts without editing scripts.
-
-## Table of contents
-
-- [The big picture](#the-big-picture)
-- [Prerequisites](#prerequisites)
-- [Auto-detection](#auto-detection)
-- [Validated on](#validated-on)
-- [Files](#files)
-- [Quick start](#quick-start)
-- [Configuration reference](#configuration-reference)
-- [Exam-day workflow](#exam-day-workflow)
-- [Manual steps you must do yourself](#manual-steps-you-must-do-yourself)
-- [Common mistakes to avoid](#common-mistakes-to-avoid)
-- [Troubleshooting](#troubleshooting)
-- [GUI launcher](#gui-launcher)
+> Engineered and tested on **Windows 11 Home Single Language (64-bit)** with **VirtualBox 7.2.16** and **Windows Server 2022 Datacenter/Standard Evaluation ISO**. Fuses a modern **Glassmorphism + Claymorphism** UI styled with **ReaLTaiizor**, backed by an automated 1-click host auto-pilot pipeline and an in-VM 50-point rubric evaluator.
 
 ---
 
-## The big picture
+## Table of Contents
 
-```mermaid
-flowchart LR
-    A[Edit config.psd1] --> B[Pack lab_scripts.iso]
-    B --> C[Build VM<br/>Task Area 01]
-    C --> D[Install Server 2022<br/>manual]
-    D --> E[Run guest script<br/>Task Areas 03-06]
-    E --> F[Manual verification]
-    F --> G[Raise your hand]
-```
+- [Features & Highlights](#features--highlights)
+- [Prerequisites](#prerequisites)
+- [Architecture & Workflow](#architecture--workflow)
+- [The ReaLTaiizor UI Launcher](#the-realtaiizor-ui-launcher)
+- [Repository Structure](#repository-structure)
+- [Quick Start: Host Auto-Pilot](#quick-start-host-auto-pilot)
+- [In-VM Hands-On Guide (34 pts Auto + 16 pts Manual)](#in-vm-hands-on-guide)
+- [50-Point Automated Rubric Evaluator](#50-point-automated-rubric-evaluator)
+- [Test-Driven Development (TDD) Suite](#test-driven-development-tdd-suite)
+- [Configuration Reference](#configuration-reference)
+- [Rubric Checklist (50 Points)](#rubric-checklist-50-points)
+- [Troubleshooting](#troubleshooting)
 
-You edit **one** file, click a few buttons (or run two commands), and the toolkit handles the tedious parts. You handle the parts only a human can.
+---
+
+## Features & Highlights
+
+- **⚡ 1-Click Host Auto-Pilot**: One master click executes config save, ISO generation (`lab_scripts.iso`), VirtualBox VM provisioning with dual mounted ISOs and bridged NIC, and powers on your VM.
+- **🎨 Glassmorphic & Claymorphic UI**: Powered by `ReaLTaiizor` (CrownForm, CrownControls, PoisonTabControl) in a sleek high-contrast dark theme. Zero internet or NuGet download required (pre-packaged `.dll`).
+- **🛡️ 50-Point In-VM Rubric Evaluator (`verify_exam.ps1`)**: Automatically evaluates all 29 rubric criteria across all 6 Task Areas from the official `IT311_Final_Lab_Reviewer.pdf` before proctor evaluation.
+- **🧪 Test-Driven Development (TDD)**: Verified with a full Pester test suite (`tests/test_suite.ps1`) ensuring configuration safety, zero UI overlap, and syntax validity.
+- **📋 Dual-Track Companion**: Includes both automated scripts and a 100% manual cheat sheet with `Win + R` shortcuts (`sysdm.cpl`, `secpol.msc`, `lusrmgr.msc`, `printmanagement.msc`).
 
 ---
 
 ## Prerequisites
 
-- **Windows host** — the primary builder is PowerShell; a Bash builder is provided for Linux/macOS/WSL.
-- [**VirtualBox**](https://www.virtualbox.org/) 7.x with `VBoxManage` on `PATH` (or installed under `D:\VirtualBox\` / the registry default).
-- A **Windows Server 2022** installation ISO placed in this folder (any `*.iso`; the builder auto-detects the newest one). The `.gitignore` excludes `*.iso`, so each user supplies their own.
-- **PowerShell 5.1+** (ships with Windows) or PowerShell 7+.
+- **Host OS**: Windows 10 / 11 (64-bit).
+- **Hypervisor**: [Oracle VirtualBox 7.x](https://www.virtualbox.org/) installed (`VBoxManage` auto-detected in default directories and `PATH`).
+- **Windows Server 2022 ISO**: Place `SERVER_EVAL_x64FRE_en-us.iso` (or any Server 2022 ISO) directly in this directory.
+- **PowerShell**: Windows PowerShell 5.1 (ships with Windows) or PowerShell 7+.
 
-## Auto-detection
+---
 
-The toolkit is designed to run on any compatible host **without editing scripts**:
+## Architecture & Workflow
 
-| What | How it's found |
-|---|---|
-| VirtualBox location | Searched in `D:\VirtualBox\`, the registry, and `PATH`. |
-| Guest OS type | Verified to be `Windows2022_64`; the script stops rather than creating the wrong guest. |
-| Windows Server ISO | If `ISOPath` is blank, the newest `*.iso` in this folder is used; an explicit path overrides it. |
-| Bridged NIC | If `BridgeAdapter` is blank, the active physical adapter is matched against `VBoxManage list bridgedifs` (VirtualBox/VMware/Hyper-V/VPN adapters are excluded). |
-| Default machine folder | Read from VirtualBox's own system properties. |
-| Script paths | All scripts resolve files relative to their own folder (`$PSScriptRoot`), so the toolkit works from any location. |
+```mermaid
+flowchart TD
+    subgraph Host["💻 Laptop Host (Pre-Exam)"]
+        A[Start_Lab_UI.bat] --> B[ReaLTaiizor Dark GUI]
+        B -->|Click [▶ START FULL LAB AUTO-PILOT]| C[Save config.psd1]
+        C --> D[Pack lab_scripts.iso<br/>IMAPI2FS]
+        D --> E[Build & Register VM<br/>1_build_vm.ps1]
+        E --> F[Launch VirtualBox GUI]
+    end
 
-## Validated on
-
-| Item | Value |
-|---|---|
-| Host OS | Windows 11 Home Single Language, 64-bit |
-| VirtualBox | 7.2.16 |
-| Guest OS type | `Windows2022_64` |
-| Active host NIC | `Intel(R) Wi-Fi 6 AX201 160MHz` (auto-detected) |
-
-## Files
-
-| File | Purpose |
-|---|---|
-| `config.psd1` | **Edit this only.** VM name/specs, ISO, server name, password, shares, printer. |
-| `1_build_vm.ps1` | Host builder for Windows (primary on this PC). Task Area 01. |
-| `1_build_vm.sh` | Host builder for Linux / macOS / WSL. Task Area 01. |
-| `2_configure_server.ps1` | Inside the guest: rename → password policy → users → file/storage → print → verify. Task Areas 03–06. |
-| `3_pack_iso.ps1` | Packages the guest script + config into `lab_scripts.iso` using Windows' built-in IMAPI2FS. |
-| `3_pack_iso.py` | Python fallback for the ISO (pycdlib, external ISO tool, or delegates to the `.ps1`). |
-| `launcher.ps1` / `Start_Lab_UI.bat` | Zero-dependency monochrome GUI control panel. |
-| `BEGINNER_GUIDE.md` | Plain-English, step-by-step guide for beginners. |
-| `README.md` | This file. |
-
-Generated at exam time: `lab_scripts.iso`.
-
-## Quick start
-
-```powershell
-cd D:\SAM_LAB
-powershell -ExecutionPolicy Bypass -File .\3_pack_iso.ps1
-powershell -ExecutionPolicy Bypass -File .\1_build_vm.ps1 -Start
+    subgraph Guest["🖥️ Guest Virtual Machine (During Exam)"]
+        F --> G[Manual OS Setup: Desktop Experience<br/>Set password: &lt;section&gt;@BatStateU]
+        G --> H[Run D:\2_configure_server.ps1<br/>Pass 1: Rename & Reboot]
+        H --> I[Run D:\2_configure_server.ps1<br/>Pass 2: Roles, Users, Shares, Printer]
+        I --> J[Profile Init: Sign into IT, HR, Manager]
+        J --> K[Run D:\verify_exam.ps1<br/>50 / 50 Score Verification]
+    end
 ```
 
-Prefer clicking? Double-click `Start_Lab_UI.bat` to use the GUI.
+---
 
-## Configuration reference
+## The ReaLTaiizor UI Launcher
 
-`config.psd1` is the **only** file you edit on exam day. Every other script reads it.
-
-| Field | Example | Notes |
-|---|---|---|
-| `VMName` | `Lab_Exam_VM` | Exact spelling from the sheet. |
-| `RAM_MB` | `4096` | Minimum 2048 MB. 4096 recommended. |
-| `Disk_GB` | `30` | Dynamic VDI. Minimum 20 GB. |
-| `NetMode` | `bridged` | `bridged` / `nat` / `hostonly` / `intnet`. |
-| `BridgeAdapter` | *(blank)* | Leave blank to auto-detect your active NIC. |
-| `ISOPath` | *(blank)* | Leave blank to auto-detect the newest `*.iso` in this folder. |
-| `ServerName` | `Lab-Server-01` | Max 15 characters. Letters, numbers, hyphens only. |
-| `SectionAdminPassword` | `3106@BatStateU` | Format: `<section>@BatStateU`. |
-| `BaseSharePath` | `C:\Shares` | Where department folders are created. |
-| `Departments` | IT / HR / Manager | Passwords, folder names, file names per department. |
-| `PublicShare` | `Public_Share` / `public.txt` | Public folder + file. |
-| `PrinterPort` | `LPT1:` | `LPT1:` or `FILE:`. |
-| `PrinterName` | `Office-Printer` | Must match the sheet exactly. |
-
-> [!IMPORTANT]
-> Double-check VM name, RAM, disk, server name, password, share names, and printer name against the instruction sheet. One typo can cost points.
-
-## Exam-day workflow
-
-Everything can be done from the **GUI launcher** or the command line. Both use the same `config.psd1`.
-
-> [!TIP]
-> **GUI path (recommended):** double-click `Start_Lab_UI.bat`. It reads `config.psd1`, lets you edit and save every field, and runs the build/pack steps with live output. See [GUI launcher](#gui-launcher).
-
-### Step 0 — Edit `config.psd1`
-
-Confirm these match the instruction sheet **exactly**: VM name, RAM, disk, server name, password, share names, printer name. (Or use the launcher's `[ SAVE CONFIG ]` button.)
-
-### Step 1 — Build the VM (Task Area 01)
-
-GUI: click `[ 1. BUILD VM ]`. CLI:
-
+Launch with **`Start_Lab_UI.bat`** or via PowerShell:
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\1_build_vm.ps1 -Start
+powershell -NoProfile -STA -ExecutionPolicy Bypass -File .\launcher.ps1
 ```
 
-The builder creates the VM, sets RAM/disk/network, attaches the ISO, and prints a **PASS/FAIL** verification summary. It does **not** run an unattended install.
+The launcher is divided into 4 clean tabs:
+1. **⚡ 1. Auto-Pilot & Config**:
+   - Master action button: `[▶ START FULL LAB AUTO-PILOT (BUILD, PACK & LAUNCH VM)]`.
+   - Section presets: `IT 3106 (3106@BatStateU)`, `IT 3107 (3107@BatStateU)`, `IT 3108 (3108@BatStateU)`.
+   - Live stream output console with clear and logging controls.
+   - Quick one-click clipboard copy buttons for guest commands.
+2. **📖 2. In-VM Hands-On Guide**:
+   - Clear, step-by-step instructions on what to click and enter inside Windows Server.
+3. **🛡️ 3. 100% Manual Cheat Sheet**:
+   - Fallback reference with `Win + R` shortcuts for every task area if scripts are restricted.
+4. **📋 4. 29-Step Rubric Checklist**:
+   - Interactive checklist covering every point from Pages 11–13 of the reviewer with a live progress score.
 
-### Step 2 — Install Windows Server 2022 (manual)
+---
 
-1. Start the VM. Press any key to boot from CD.
-2. Choose language → **Install now**.
-3. Select **Windows Server 2022 Standard Evaluation (Desktop Experience)**. Not Server Core.
-4. Accept license → **Custom: Install Windows only** → select the disk → Next.
-5. Set the Administrator password. Log in as Administrator.
+## Repository Structure
 
-### Step 3 — Mount the ISO and run the guest script (Task Areas 03–06)
+```
+D:\SAM_LAB/
+├── Start_Lab_UI.bat            # Double-click launcher shortcut
+├── launcher.ps1                # Main ReaLTaiizor 4-tab control panel
+├── ReaLTaiizor.dll             # High-performance WinForms theme assembly (.NET 4.8)
+├── config.psd1                 # Central exam configuration (VM specs, names, accounts)
+├── 1_build_vm.ps1              # Host builder for VirtualBox (Task Area 01)
+├── 1_build_vm.sh               # Bash fallback builder (Linux / macOS / WSL)
+├── 2_configure_server.ps1      # Guest provisioner (Task Areas 03, 04, 05, 06)
+├── 3_pack_iso.ps1              # Packages config + scripts + verifier into ISO
+├── 3_pack_iso.py               # Python ISO fallback builder
+├── verify_exam.ps1             # 50-point rubric evaluator for Windows Server guest
+├── IT311_Final_Lab_Reviewer.pdf# Official BatStateU lab exam reviewer & rubric
+├── BEGINNER_GUIDE.md           # Beginner-friendly walkthrough with explanations
+├── README.md                   # System documentation & reference
+└── tests/
+    └── test_suite.ps1          # Pester TDD test suite (config, syntax, UI layout)
+```
 
-1. On the host, make sure `lab_scripts.iso` exists (GUI: `[ 2. PACK ISO ]`, or run `3_pack_iso.ps1`).
-2. In the VM: **Devices → Optical Drives → Choose disk image** → `lab_scripts.iso`.
-3. Open PowerShell **as Administrator**:
+---
+
+## Quick Start: Host Auto-Pilot
+
+1. Ensure your Windows Server 2022 ISO is in `D:\SAM_LAB`.
+2. Double-click `Start_Lab_UI.bat`.
+3. Pick your class section (`3106`, `3107`, or `3108`).
+4. Click **`[▶ START FULL LAB AUTO-PILOT]`**.
+5. Wait for the live console to confirm VM creation and launch VirtualBox.
+
+---
+
+## In-VM Hands-On Guide
+
+### Step 1: Install Windows Server 2022 (Manual — 8 Pts)
+- Press any key when prompted to boot from CD/DVD.
+- Select **Windows Server 2022 Standard/Datacenter Evaluation (Desktop Experience)**. *(Do NOT choose Server Core!)*
+- Choose **Custom: Install Windows only** and select Drive 0 (30 GB).
+- When prompted, set the Administrator password: `<section>@BatStateU` (e.g., `3106@BatStateU`).
+
+### Step 2: Run Guest Provisioning (Automated — 34 Pts)
+1. Inside the VM, open PowerShell as **Administrator**.
+2. Run the command:
    ```powershell
-   Set-ExecutionPolicy Bypass -Scope Process -Force
-   D:\2_configure_server.ps1
+   Set-ExecutionPolicy Bypass -Scope Process -Force; D:\2_configure_server.ps1
    ```
-   The script renames the server, prompts for a reboot, and exits. **This is expected.**
-4. After reboot, log in, re-mount the ISO, and run the script again. This second pass completes password policy, users, shares, ACLs, printer, and verification.
+3. **Pass 1 (Task Area 04)**: The hostname is checked and renamed to `Lab-Server-01`. Press **Y** to reboot.
+4. **Pass 2 (Task Areas 03, 05, 06)**: After reboot, log back in as Administrator and run the command again:
+   ```powershell
+   Set-ExecutionPolicy Bypass -Scope Process -Force; D:\2_configure_server.ps1
+   ```
+   *Automatically applies password policy, creates users (IT, HR, Manager), provisions shares with ACL isolation, generates `.txt` files, and installs the shared printer.*
 
-> [!TIP]
-> Click `[ 3. COPY GUEST COMMAND ]` in the launcher to copy the guest command to your clipboard.
+### Step 3: Mandatory Profile Init & Hands-On Checks (8 Pts)
+1. Sign out of Administrator.
+2. Sign in once as `IT`, then `HR`, then `Manager` (this generates their `C:\Users\<user>\Desktop` folders).
+3. Re-run `D:\2_configure_server.ps1` as Administrator once more so shortcuts land on their desktops.
+4. Verify "Access is denied": While logged in as `IT`, opening `\\Lab-Server-01\HR_Share` must display **Access is denied**.
 
-### Step 4 — Manual verification
+---
 
-See [Manual steps you must do yourself](#manual-steps-you-must-do-yourself).
+## 50-Point Automated Rubric Evaluator
 
-### Step 5 — Leave the VM running
+Included directly on the mounted ISO is `verify_exam.ps1`. Inside the VM PowerShell (as Admin), run:
+```powershell
+D:\verify_exam.ps1
+```
 
-**Do not shut down.** Raise your hand for grading.
+The evaluator inspects:
+- **Task Area 01 (VM Specs)**: RAM allocation $\ge$ 2048 MB, Disk $\ge$ 20 GB.
+- **Task Area 02 (OS Installation)**: Desktop Experience GUI verified.
+- **Task Area 03 (Users & Policies)**: Password complexity enabled, minimum length 8, local accounts (IT, HR, Manager) present with `PasswordNeverExpires`.
+- **Task Area 04 (Server Rename)**: Hostname exactly matches config (`Lab-Server-01`).
+- **Task Area 05 (File & Storage)**: Roles installed, shares (`IT_Share`, `HR_Share`, `Manager_Share`, `Public_Share`) active, NTFS ACL isolation confirmed, text files present, desktop shortcuts verified.
+- **Task Area 06 (Print Services)**: Print server role active, driver installed, `Office-Printer` shared on `LPT1:`.
 
-## Manual steps you must do yourself
+Outputs full grading breakdown and final score:
+```
+======================================================================
+  TOTAL SCORE: 50 / 50 POINTS
+======================================================================
+```
 
-These can't be automated and are checked by the grader:
+---
 
-- Select **"Desktop Experience"** during Windows setup.
-- **Log in once as IT, HR, and Manager** so Windows creates their profiles. Then re-run `D:\2_configure_server.ps1` so shortcuts land in the real profile folders.
-- **Verify desktop shortcuts** — each user sees only their own share shortcut plus `Public_Share`. No other departments.
-- **Verify "Access is denied"** — log in as IT and open `\\Lab-Server-01\HR_Share` and `\\Lab-Server-01\Manager_Share`. Both must deny access.
-- **Verify the printer** — `Office-Printer` appears at `\\Lab-Server-01`.
-- **Verify credential files** — `it.txt`, `hr.txt`, `manager.txt`, `public.txt` contain the correct passwords.
-- **Leave the VM running** and raise your hand.
+## Test-Driven Development (TDD) Suite
 
-## Common mistakes to avoid
+To guarantee zero runtime corruption and clean UI layout, run the automated Pester test suite on the host:
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-Pester -Script 'D:\SAM_LAB\tests\test_suite.ps1'"
+```
 
-| # | Mistake | How this toolkit prevents it |
-|---|---|---|
-| 1 | Wrong VM name or OS type | Builder uses `Windows2022_64` and reads `VMName` from config; prints PASS/FAIL verification. |
-| 2 | RAM under 2048 MB or disk under 20 GB | Config defaults to 4096 / 30; builder verifies read-back. |
-| 3 | Network mode not `bridged` | Config default `bridged`; builder auto-detects the real host NIC. |
-| 4 | Unattended install used | Builder attaches ISO but does **not** enable unattended install. |
-| 5 | Selected "Server Core" | Manual step — you must choose Desktop Experience. |
-| 6 | Server name > 15 chars or contains spaces/underscores | GUI live counter warns; script validates. |
-| 7 | Shares created before the rename | Script renames first, reboots, then creates shares. |
-| 8 | Lost Administrators/SYSTEM access on folders | Script grants Full Control to Administrators and SYSTEM first. |
-| 9 | Public desktop leaks department shortcuts | Shortcuts go into each user's private profile desktop. |
-| 10 | `.txt.txt` double extensions | `Get-TextFileName` normalizes. |
-| 11 | "Must change password at next logon" left ON | Script sets `PasswordExpired = 0` via ADSI. |
-| 12 | Password policy not applied | Script uses `secedit` + `gpupdate /force` and verifies. |
-| 13 | Printer not shared | Script creates `Office-Printer` on `LPT1:` and shares it. |
-| 14 | Shutting down the VM before grading | Leave it running and raise your hand. |
+**Verified Test Assertions:**
+- `config.psd1` structure and data integrity.
+- Regex replacement safety in config saving logic.
+- Syntax and key validation across `1_build_vm.ps1`, `2_configure_server.ps1`, and `verify_exam.ps1`.
+- Clean ISO generation with `3_pack_iso.ps1`.
+- Headless layout verification asserting **0 UI overlaps** and proper dock margins.
+
+---
+
+## Rubric Checklist (50 Points)
+
+| Area | Description | Points | Evaluator |
+|---|---|---|---|
+| **Task Area 01** | Virtual Machine Configuration (RAM $\ge$ 2GB, VDI $\ge$ 20GB, Bridged) | 8 pts | `verify_exam.ps1` / Host |
+| **Task Area 02** | OS Installation (Desktop Experience, section password) | 8 pts | `verify_exam.ps1` |
+| **Task Area 03** | Local Security Policy & User Management (IT, HR, Manager) | 10 pts | `verify_exam.ps1` |
+| **Task Area 04** | Server Rename (`Lab-Server-01`) | 5 pts | `verify_exam.ps1` |
+| **Task Area 05** | File and Storage Services (Shares, NTFS isolation, Shortcuts) | 12 pts | `verify_exam.ps1` |
+| **Task Area 06** | Print and Document Services (`Office-Printer` on `LPT1:`) | 7 pts | `verify_exam.ps1` |
+| **TOTAL** | **Full Exam Mark** | **50 pts** | **100% Pass** |
+
+---
 
 ## Troubleshooting
 
-| Problem | Fix |
-|---|---|
-| `VBoxManage.exe was not found` | Install VirtualBox or add its folder to `PATH`. |
-| `Windows2022_64` not listed | Update VirtualBox. |
-| `VM already exists` | Use `-Recreate` (only if disposable) or delete the VM. |
-| ISO build fails | Run `3_pack_iso.ps1` again; uses Windows' built-in IMAPI2FS. |
-| `config.psd1` parse error | Check for missing quotes or commas. |
-| Guest script "Access is denied" | Run PowerShell **as Administrator**. |
-| Shortcuts missing after first run | Log in as each user, then re-run the guest script. |
-| Printer driver fails | Script retries with `Windows x64` environment automatically. |
-| GUI won't open | Run `powershell -NoProfile -STA -ExecutionPolicy Bypass -File launcher.ps1` from a console. |
-
-## GUI launcher
-
-Double-click `Start_Lab_UI.bat` to open the monochrome control panel (`launcher.ps1`). No external dependencies — only Windows PowerShell and WinForms.
-
-| Control | What it does |
-|---|---|
-| Launch | Reads `config.psd1` and fills every field. |
-| `[ SAVE CONFIG ]` | Writes the form values back to `config.psd1` (department passwords are preserved). |
-| `[ 1. BUILD VM ]` | Saves the config, runs `1_build_vm.ps1`, and streams output into the console box. |
-| `[ 2. PACK ISO ]` | Saves the config, runs `3_pack_iso.ps1`, and streams output into the console box. |
-| `[ 3. COPY GUEST COMMAND ]` | Copies the guest command to the clipboard. |
-| `[ GUIDE ]` | Opens a step-by-step wizard inside the launcher. |
-| `CLEAR` | Empties the console. |
-
-Hotkeys: `Ctrl+S` save, `F5` build, `F6` pack.
+| Issue | Cause | Fix |
+|---|---|---|
+| `VBoxManage was not found` | VirtualBox not on PATH or non-standard directory | Install VirtualBox 7.x or add `C:\Program Files\Oracle\VirtualBox` to PATH. |
+| `config.psd1 could not be parsed` | Syntax or quote error | Save through the launcher UI or run `tests/test_suite.ps1` to validate. |
+| `Desktop shortcuts missing` | Users have not logged in yet | Sign in as IT, HR, and Manager once, then re-run `D:\2_configure_server.ps1`. |
+| `Access is denied running script` | PowerShell not running elevated | Right-click PowerShell and select **Run as Administrator**. |

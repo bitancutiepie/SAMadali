@@ -148,10 +148,82 @@ powershell -ExecutionPolicy Bypass -File .\1_build_vm.ps1 -Start
    - Installs and shares the printer `Office-Printer` on `LPT1:`.
    - Runs verification: confirms IT is **denied** access to HR's folder.
 
-### GUI shortcut for the guest command
-On your host, click **[ 3. COPY GUEST COMMAND ]** in the launcher. It copies
-`Set-ExecutionPolicy Bypass -Scope Process -Force; D:\2_configure_server.ps1`
-to your clipboard — paste it into the guest PowerShell.
+### 4.4 Automated 50-Point Exam Check (`verify_exam.ps1`)
+Inside the guest, run the built-in grading evaluator:
+```powershell
+D:\verify_exam.ps1
+```
+This tool checks all 6 task areas against the reviewer rubric and outputs a score out of 50 points (e.g. `TOTAL SCORE: 50 / 50 POINTS`).
+
+---
+
+## 4B. Fallback: 100% Manual Execution (If Instructor Forbids Automation)
+
+If your instructor or proctor specifies that you cannot mount `lab_scripts.iso` or execute automation scripts inside the VM, keep this UI open on your laptop screen and follow these rapid GUI steps:
+
+### 1. Rename Server (5 pts)
+- Press `Win + R`, type `sysdm.cpl`, and hit Enter.
+- Click **Change...**
+- Enter the computer name from your sheet (e.g. `Lab-Server-01`, max 15 characters, no spaces).
+- Click **OK** → **Restart Now**.
+
+### 2. Password Policy (4 pts)
+- After reboot, press `Win + R`, type `secpol.msc`, and hit Enter.
+- Navigate to: **Security Settings** > **Account Policies** > **Password Policy**.
+- Double-click **Password must meet complexity requirements** → select **Enabled** → **OK**.
+- Double-click **Minimum password length** → set to **8** characters → **OK**.
+
+### 3. Create Department User Accounts (6 pts)
+- Press `Win + R`, type `lusrmgr.msc`, and hit Enter.
+- Click **Users** folder > Right-click in the middle pane > **New User...**
+- Create the 3 users from the sheet:
+  - **IT** (Password: `Tech#Dept2026`)
+  - **HR** (Password: `People#Dept2026`)
+  - **Manager** (Password: `Lead#Dept2026`)
+- ⚠️ **Critical:** Uncheck **"User must change password at next logon"**. Check **"Password never expires"**. Click **Create**.
+
+### 4. Install Roles (4 pts)
+- Open **Server Manager** > click **Manage** (top right) > **Add Roles and Features**.
+- Click **Next** until you reach **Server Roles**.
+- Expand **File and Storage Services** > expand **File and iSCSI Services**:
+  - Check **File Server**
+  - Check **iSCSI Target Server**
+- Check **Print and Document Services** (accept features if prompted).
+- Click **Next** until the confirmation screen, then click **Install**.
+
+### 5. File Shares & NTFS Permissions (6 pts)
+- Open File Explorer and create folder `C:\Shares`.
+- Inside `C:\Shares`, create:
+  - `IT_Share`
+  - `HR_Share`
+  - `Manager_Share`
+  - `Public_Share`
+- For each department folder (e.g., `IT_Share`):
+  1. Right-click > **Properties** > **Sharing** tab > **Advanced Sharing** > Check **Share this folder** > **OK**.
+  2. Click **Security** tab > **Advanced** button.
+  3. Click **Disable inheritance** > choose **Convert inherited permissions into explicit permissions**.
+  4. Select **Users (...\Users)** and click **Remove**.
+  5. Click **Add** > **Select a principal** > type the department user (`IT`) > grant **Modify** or **Full Control** > **OK**.
+  6. Ensure **Administrators** and **SYSTEM** still have **Full control**.
+  7. Repeat for `HR_Share` (add `HR`) and `Manager_Share` (add `Manager`).
+- For `Public_Share`:
+  - Share it, and on Security grant `IT`, `HR`, and `Manager` **Modify** or **Read & Execute**.
+
+### 6. Credential Files & Shortcuts (2 pts)
+- In `C:\Shares\IT_Share`, create `it.txt` containing `Tech#Dept2026`.
+- In `C:\Shares\HR_Share`, create `hr.txt` containing `People#Dept2026`.
+- In `C:\Shares\Manager_Share`, create `manager.txt` containing `Lead#Dept2026`.
+- In `C:\Shares\Public_Share`, create `public.txt`.
+- Create desktop shortcuts for each user pointing to their share (`\\Lab-Server-01\IT_Share`, etc.).
+
+### 7. Print Services (7 pts)
+- Press `Win + R`, type `printmanagement.msc`, and hit Enter.
+- Expand **Print Servers** > right-click **Printers** > **Add Printer...**
+- Select **Use an existing port: LPT1:** > Next.
+- Manufacturer: **Generic**, Printer: **Generic / Text Only** > Next.
+- Printer Name: Enter `Office-Printer` (from sheet).
+- Check **Share this printer** with share name `Office-Printer`.
+- Click **Next** > **Finish**.
 
 ---
 
