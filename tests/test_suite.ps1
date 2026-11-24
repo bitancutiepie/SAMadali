@@ -106,4 +106,56 @@ Describe "IT 311 Final Lab Suite" {
         $global:overlapCount | Should Be 0
         $global:tabTop | Should BeGreaterThan 64
     }
+
+    It "In-VM Guide Next button advances step-by-step without prematurely switching tabs" {
+        $code = [System.IO.File]::ReadAllText((Join-Path $labRoot "launcher.ps1"))
+        $inspectBlock = @'
+        function Invoke-CtrlClick($ctrl) {
+            $m = $ctrl.GetType().GetMethod("OnClick", [System.Reflection.BindingFlags]"NonPublic,Instance")
+            $m.Invoke($ctrl, [System.EventArgs]::Empty)
+        }
+
+        $form.CreateControl()
+        $tabSteps.SelectedTab = $tab2
+        $global:initialStep = $script:CurrentWizardIndex
+        $global:tabAtStart = $tabSteps.SelectedTab.Text
+
+        # Simulate clicking Next on Step 1 (Index 0 -> 1)
+        Invoke-CtrlClick $btnNextStep
+        $global:stepAfterFirstNext = $script:CurrentWizardIndex
+        $global:tabAfterFirstNext = $tabSteps.SelectedTab.Text
+
+        # Simulate clicking Next on Step 2 (Index 1 -> 2)
+        Invoke-CtrlClick $btnNextStep
+        $global:stepAfterSecondNext = $script:CurrentWizardIndex
+        $global:tabAfterSecondNext = $tabSteps.SelectedTab.Text
+
+        # Simulate clicking Next on Step 3 (Index 2 -> 3)
+        Invoke-CtrlClick $btnNextStep
+        $global:stepAfterThirdNext = $script:CurrentWizardIndex
+        $global:tabAfterThirdNext = $tabSteps.SelectedTab.Text
+
+        # Simulate clicking Next on Step 4 (Index 3 -> finished, should navigate to tab4)
+        Invoke-CtrlClick $btnNextStep
+        $global:tabAfterFinish = $tabSteps.SelectedTab.Text
+
+        $form.Dispose()
+'@
+        $testCode = $code.Replace('[void]$form.ShowDialog()', $inspectBlock)
+        [ScriptBlock]::Create($testCode).Invoke()
+
+        # Step progression assertions
+        $global:initialStep | Should Be 0
+        $global:stepAfterFirstNext | Should Be 1
+        $global:stepAfterSecondNext | Should Be 2
+        $global:stepAfterThirdNext | Should Be 3
+
+        # Must stay on Tab 2 during intermediate steps
+        $global:tabAfterFirstNext | Should Match '2\. In-VM Hands-On Guide'
+        $global:tabAfterSecondNext | Should Match '2\. In-VM Hands-On Guide'
+        $global:tabAfterThirdNext | Should Match '2\. In-VM Hands-On Guide'
+
+        # Must only jump to tab 4 once all 4 steps are finished
+        $global:tabAfterFinish | Should Match '4\. 29-Step Rubric Checklist'
+    }
 }

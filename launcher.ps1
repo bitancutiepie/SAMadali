@@ -587,7 +587,7 @@ $btnPrevStep.add_Click({
 })
 
 $btnNextStep.add_Click({
-    if ($script:CurrentWizardIndex -lt ($script:WizardSteps.Count - 1)) {
+    if ($script:CurrentWizardIndex -lt ($script:WizardStepsData.Count - 1)) {
         $script:CurrentWizardIndex++
         Update-WizardView
     } else {
