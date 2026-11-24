@@ -1,92 +1,115 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 160" width="100%" height="160">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 160" width="100%" height="160" shape-rendering="crispEdges">
   <defs>
-    <!-- Background Frame -->
-    <linearGradient id="flowBg" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#141720" />
-      <stop offset="100%" stop-color="#0d0f14" />
-    </linearGradient>
-
-    <!-- Card Elevation Filter -->
-    <filter id="tileElevation" x="-10%" y="-10%" width="125%" height="125%">
-      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000000" flood-opacity="0.7" />
-      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#ffffff" flood-opacity="0.08" />
-    </filter>
-
     <style>
-      @keyframes activePulse {
-        0%, 100% { transform: translateY(0px); border-color: #ffffff; }
-        50% { transform: translateY(-3px); }
+      @keyframes blinkCursor {
+        0%, 49% { opacity: 1; }
+        50%, 100% { opacity: 0; }
       }
-      @keyframes dashFlow {
-        to { stroke-dashoffset: -24; }
+      @keyframes pixelMarch {
+        to { stroke-dashoffset: -16; }
       }
-      .stage-1 { animation: activePulse 4s ease-in-out infinite 0s; }
-      .stage-2 { animation: activePulse 4s ease-in-out infinite 1s; }
-      .stage-3 { animation: activePulse 4s ease-in-out infinite 2s; }
-      .stage-4 { animation: activePulse 4s ease-in-out infinite 3s; }
-      .wire-stream {
-        stroke-dasharray: 6 6;
-        animation: dashFlow 1.8s linear infinite;
+      @keyframes floatCard {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-2px); }
+      }
+      .cursor-blink { animation: blinkCursor 1s infinite; }
+      .wire-step {
+        stroke-dasharray: 4 4;
+        animation: pixelMarch 1s linear infinite;
+      }
+      .card-1 { animation: floatCard 4s ease-in-out infinite 0s; }
+      .card-2 { animation: floatCard 4s ease-in-out infinite 0.5s; }
+      .card-3 { animation: floatCard 4s ease-in-out infinite 1s; }
+      .card-4 { animation: floatCard 4s ease-in-out infinite 1.5s; }
+      .retro-font {
+        font-family: 'Courier New', Courier, 'Lucida Console', Monaco, monospace;
       }
     </style>
   </defs>
 
-  <!-- Container Box -->
-  <rect x="0" y="0" width="900" height="160" rx="14" fill="url(#flowBg)" stroke="#232733" stroke-width="1.2" />
-
-  <!-- Animated Monochrome Connecting Bus Lines -->
-  <line class="wire-stream" x1="195" y1="80" x2="250" y2="80" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.4" />
-  <line class="wire-stream" x1="420" y1="80" x2="475" y2="80" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.4" />
-  <line class="wire-stream" x1="645" y1="80" x2="700" y2="80" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.4" />
-
-  <!-- Stage 1: Configure -->
-  <g class="stage-1" transform="translate(25, 25)">
-    <rect x="0" y="0" width="170" height="110" rx="10" fill="#181b24" stroke="#333745" stroke-width="1" filter="url(#tileElevation)" />
-    <!-- Sliders Vector Icon -->
-    <circle cx="28" cy="28" r="10" fill="#101217" stroke="#ffffff" stroke-width="1" stroke-opacity="0.7" />
-    <line x1="24" y1="28" x2="32" y2="28" stroke="#ffffff" stroke-width="1.2" />
-    <circle cx="26" cy="28" r="1.5" fill="#ffffff" />
-    <text x="46" y="32" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11.5" font-weight="700">01. CONFIGURE</text>
-    <text x="20" y="65" fill="#e2e8f0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">Section Presets</text>
-    <text x="20" y="82" fill="#7a8296" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">3106 / 3107 / 3108</text>
-    <text x="20" y="97" fill="#525869" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9">config.psd1 validation</text>
+  <!-- Outer Retro Terminal Shell -->
+  <rect x="0" y="0" width="860" height="160" fill="#0c0d10" stroke="#2b2e38" stroke-width="2" />
+  
+  <!-- Subtle CRT Scanlines -->
+  <g stroke="#ffffff" stroke-opacity="0.02" stroke-width="1">
+    <line x1="0" y1="20" x2="860" y2="20" />
+    <line x1="0" y1="40" x2="860" y2="40" />
+    <line x1="0" y1="60" x2="860" y2="60" />
+    <line x1="0" y1="80" x2="860" y2="80" />
+    <line x1="0" y1="100" x2="860" y2="100" />
+    <line x1="0" y1="120" x2="860" y2="120" />
+    <line x1="0" y1="140" x2="860" y2="140" />
   </g>
 
-  <!-- Stage 2: Pack ISO -->
-  <g class="stage-2" transform="translate(250, 25)">
-    <rect x="0" y="0" width="170" height="110" rx="10" fill="#181b24" stroke="#333745" stroke-width="1" filter="url(#tileElevation)" />
-    <!-- Disc Vector Icon -->
-    <circle cx="28" cy="28" r="10" fill="#101217" stroke="#ffffff" stroke-width="1" stroke-opacity="0.7" />
-    <circle cx="28" cy="28" r="3" fill="none" stroke="#ffffff" stroke-width="1" />
-    <text x="46" y="32" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11.5" font-weight="700">02. PACK ISO</text>
-    <text x="20" y="65" fill="#e2e8f0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">lab_scripts.iso</text>
-    <text x="20" y="82" fill="#7a8296" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">IMAPI2FS optical build</text>
-    <text x="20" y="97" fill="#525869" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9">Stages scripts + verifier</text>
+  <!-- Pixel Connecting Cable Streamers -->
+  <line class="wire-step" x1="195" y1="80" x2="235" y2="80" stroke="#7e8596" stroke-width="2" />
+  <line class="wire-step" x1="410" y1="80" x2="450" y2="80" stroke="#7e8596" stroke-width="2" />
+  <line class="wire-step" x1="625" y1="80" x2="665" y2="80" stroke="#ffffff" stroke-width="2" />
+
+  <!-- Node 1: CONFIG -->
+  <g class="card-1">
+    <!-- Pixel Card Body -->
+    <rect x="25" y="24" width="170" height="112" fill="#141720" stroke="#3d4354" stroke-width="2" />
+    <!-- Pixel Header Bar -->
+    <rect x="27" y="26" width="166" height="24" fill="#1c212e" />
+    <!-- Pixel Sliders Icon -->
+    <rect x="36" y="34" width="4" height="8" fill="#ffffff" />
+    <rect x="43" y="32" width="4" height="12" fill="#8d94a5" />
+    <rect x="50" y="36" width="4" height="6" fill="#ffffff" />
+    <text class="retro-font" x="62" y="42" fill="#ffffff" font-size="10.5" font-weight="700">01_CONFIG</text>
+    
+    <!-- Content Lines -->
+    <text class="retro-font" x="38" y="70" fill="#cbd5e1" font-size="10" font-weight="bold">> SECTION</text>
+    <text class="retro-font" x="38" y="86" fill="#8d94a5" font-size="9">3106/3107/3108</text>
+    <text class="retro-font" x="38" y="104" fill="#8d94a5" font-size="9">> config.psd1</text>
+    <rect class="cursor-blink" x="122" y="96" width="5" height="9" fill="#ffffff" />
+    <text class="retro-font" x="38" y="122" fill="#525866" font-size="8">[OK] PARSED</text>
   </g>
 
-  <!-- Stage 3: Build VM -->
-  <g class="stage-3" transform="translate(475, 25)">
-    <rect x="0" y="0" width="170" height="110" rx="10" fill="#181b24" stroke="#333745" stroke-width="1" filter="url(#tileElevation)" />
-    <!-- Virtual Machine Vector Icon -->
-    <circle cx="28" cy="28" r="10" fill="#101217" stroke="#ffffff" stroke-width="1" stroke-opacity="0.7" />
-    <rect x="23" y="24" width="10" height="8" rx="1" fill="none" stroke="#ffffff" stroke-width="1" />
-    <line x1="28" y1="32" x2="28" y2="34" stroke="#ffffff" stroke-width="1" />
-    <line x1="25" y1="34" x2="31" y2="34" stroke="#ffffff" stroke-width="1" />
-    <text x="46" y="32" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11.5" font-weight="700">03. BUILD VM</text>
-    <text x="20" y="65" fill="#e2e8f0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">VirtualBox Host</text>
-    <text x="20" y="82" fill="#7a8296" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">4GB RAM • Bridged NIC</text>
-    <text x="20" y="97" fill="#525869" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9">Dual ISO auto-mount</text>
+  <!-- Node 2: PACK ISO -->
+  <g class="card-2">
+    <rect x="240" y="24" width="170" height="112" fill="#141720" stroke="#3d4354" stroke-width="2" />
+    <rect x="242" y="26" width="166" height="24" fill="#1c212e" />
+    <!-- Pixel Floppy/Disc Icon -->
+    <rect x="251" y="32" width="12" height="12" fill="#141720" stroke="#ffffff" stroke-width="1.5" />
+    <rect x="255" y="34" width="4" height="4" fill="#ffffff" />
+    <text class="retro-font" x="272" y="42" fill="#ffffff" font-size="10.5" font-weight="700">02_PACK_ISO</text>
+    
+    <text class="retro-font" x="253" y="70" fill="#cbd5e1" font-size="10" font-weight="bold">> IMAPI2FS</text>
+    <text class="retro-font" x="253" y="86" fill="#8d94a5" font-size="9">scripts.iso</text>
+    <text class="retro-font" x="253" y="104" fill="#8d94a5" font-size="9">> staged: 3 files</text>
+    <text class="retro-font" x="253" y="122" fill="#525866" font-size="8">[OK] 118 KB</text>
   </g>
 
-  <!-- Stage 4: Verify 50 Pts -->
-  <g class="stage-4" transform="translate(700, 25)">
-    <rect x="0" y="0" width="175" height="110" rx="10" fill="#181b24" stroke="#ffffff" stroke-width="1" stroke-opacity="0.5" filter="url(#tileElevation)" />
-    <!-- Checkmark Badge Vector Icon -->
-    <circle cx="28" cy="28" r="10" fill="#ffffff" />
-    <path d="M 24 28 L 27 31 L 33 25" fill="none" stroke="#101217" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-    <text x="46" y="32" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11.5" font-weight="800">04. EVALUATE</text>
-    <text x="20" y="65" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700">50 / 50 POINTS</text>
-    <text x="20" y="82" fill="#9da4b5" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">verify_exam.ps1</text>
-    <text x="20" y="97" fill="#7a8296" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9">All 29 rubric checks</text>
+  <!-- Node 3: BUILD VM -->
+  <g class="card-3">
+    <rect x="455" y="24" width="170" height="112" fill="#141720" stroke="#3d4354" stroke-width="2" />
+    <rect x="457" y="26" width="166" height="24" fill="#1c212e" />
+    <!-- Pixel PC Monitor Icon -->
+    <rect x="466" y="32" width="14" height="9" fill="#141720" stroke="#ffffff" stroke-width="1.5" />
+    <rect x="471" y="42" width="4" height="2" fill="#ffffff" />
+    <text class="retro-font" x="488" y="42" fill="#ffffff" font-size="10.5" font-weight="700">03_BUILD_VM</text>
+    
+    <text class="retro-font" x="468" y="70" fill="#cbd5e1" font-size="10" font-weight="bold">> VBOX 7.x</text>
+    <text class="retro-font" x="468" y="86" fill="#8d94a5" font-size="9">RAM: 4096 MB</text>
+    <text class="retro-font" x="468" y="104" fill="#8d94a5" font-size="9">NIC: Bridged</text>
+    <text class="retro-font" x="468" y="122" fill="#525866" font-size="8">[OK] REGISTERED</text>
+  </g>
+
+  <!-- Node 4: EVALUATE -->
+  <g class="card-4">
+    <rect x="670" y="24" width="165" height="112" fill="#181c26" stroke="#ffffff" stroke-width="2" />
+    <rect x="672" y="26" width="161" height="24" fill="#ffffff" />
+    <!-- Pixel Check Icon -->
+    <rect x="681" y="37" width="2" height="4" fill="#141720" />
+    <rect x="683" y="39" width="2" height="4" fill="#141720" />
+    <rect x="685" y="35" width="2" height="8" fill="#141720" />
+    <rect x="687" y="33" width="2" height="4" fill="#141720" />
+    <text class="retro-font" x="696" y="42" fill="#141720" font-size="10.5" font-weight="900">04_VERIFY</text>
+    
+    <text class="retro-font" x="683" y="70" fill="#ffffff" font-size="10.5" font-weight="bold">> SCORE: 50/50</text>
+    <text class="retro-font" x="683" y="86" fill="#cbd5e1" font-size="9">29/29 PASSED</text>
+    <text class="retro-font" x="683" y="104" fill="#94a3b8" font-size="9">> verify_exam</text>
+    <text class="retro-font" x="683" y="122" fill="#cbd5e1" font-size="8.5">[EXAM READY]</text>
   </g>
 </svg>

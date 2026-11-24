@@ -1,143 +1,114 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240" width="100%" height="240">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 220" width="100%" height="220" shape-rendering="crispEdges">
   <defs>
-    <!-- Monochrome Dark Background -->
-    <linearGradient id="monoBg" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#14161b" />
-      <stop offset="100%" stop-color="#0c0d10" />
-    </linearGradient>
-
-    <!-- Clay Elevation Filter -->
-    <filter id="clayElevation" x="-10%" y="-10%" width="125%" height="125%">
-      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.8" />
-      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#ffffff" flood-opacity="0.1" />
-    </filter>
-
     <style>
-      @keyframes floatSoft {
+      @keyframes softFloat {
         0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-4px); }
+        50% { transform: translateY(-3px); }
       }
-      @keyframes dashAnim {
-        to { stroke-dashoffset: -32; }
+      @keyframes blinkCursor {
+        0%, 49% { opacity: 1; }
+        50%, 100% { opacity: 0; }
       }
-      @keyframes beamPulse {
-        0%, 100% { opacity: 0.2; }
-        50% { opacity: 0.9; }
+      @keyframes cableFlow {
+        to { stroke-dashoffset: -16; }
       }
-      @keyframes ringPulse {
-        0%, 100% { transform: scale(1); opacity: 0.8; }
-        50% { transform: scale(1.15); opacity: 0.3; }
+      .retro-float { animation: softFloat 5s ease-in-out infinite; }
+      .cursor-blink { animation: blinkCursor 1s infinite; }
+      .cable-stream {
+        stroke-dasharray: 4 4;
+        animation: cableFlow 1.2s linear infinite;
       }
-      .floating-group {
-        animation: floatSoft 5s ease-in-out infinite;
-      }
-      .stream-line {
-        stroke-dasharray: 6 6;
-        animation: dashAnim 2s linear infinite;
-      }
-      .glow-beam {
-        animation: beamPulse 3s ease-in-out infinite;
-      }
-      .pulse-ring {
-        animation: ringPulse 2.5s ease-in-out infinite;
-        transform-origin: 730px 58px;
+      .pixel-font {
+        font-family: 'Courier New', Courier, 'Lucida Console', Monaco, monospace;
       }
     </style>
   </defs>
 
-  <!-- Outer Glass Frame -->
-  <rect x="10" y="10" width="880" height="220" rx="16" fill="url(#monoBg)" stroke="#272b36" stroke-width="1.2" />
-
-  <!-- Technical Grid Pattern -->
-  <g stroke="#ffffff" stroke-opacity="0.03" stroke-width="1">
-    <line x1="10" y1="70" x2="890" y2="70" />
-    <line x1="10" y1="130" x2="890" y2="130" />
-    <line x1="260" y1="10" x2="260" y2="230" />
-    <line x1="620" y1="10" x2="620" y2="230" />
+  <!-- Outer Dark Shell -->
+  <rect x="0" y="0" width="860" height="220" fill="#0c0d10" stroke="#2b2e38" stroke-width="2" />
+  
+  <!-- CRT Scanlines (Subtle Monochrome) -->
+  <g stroke="#ffffff" stroke-opacity="0.02" stroke-width="1">
+    <line x1="0" y1="20" x2="860" y2="20" />
+    <line x1="0" y1="45" x2="860" y2="45" />
+    <line x1="0" y1="70" x2="860" y2="70" />
+    <line x1="0" y1="95" x2="860" y2="95" />
+    <line x1="0" y1="120" x2="860" y2="120" />
+    <line x1="0" y1="145" x2="860" y2="145" />
+    <line x1="0" y1="170" x2="860" y2="170" />
+    <line x1="0" y1="195" x2="860" y2="195" />
   </g>
 
-  <!-- Top Glass Sheen Edge -->
-  <line class="glow-beam" x1="100" y1="10" x2="800" y2="10" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.6" stroke-linecap="round" />
+  <!-- Top Retro Terminal Bar -->
+  <rect x="2" y="2" width="856" height="26" fill="#141720" stroke="#2b2e38" stroke-width="1" />
+  <rect x="14" y="9" width="8" height="8" fill="#ffffff" stroke-opacity="0.8" />
+  <rect x="26" y="9" width="8" height="8" fill="#525866" />
+  <rect x="38" y="9" width="8" height="8" fill="#303542" />
+  <text class="pixel-font" x="56" y="19" fill="#9da4b5" font-size="10" font-weight="700">TERMINAL://SAM_LAB/IT311_EXAM_TOOLKIT</text>
 
-  <!-- Floating Hero Architecture Group -->
-  <g class="floating-group">
-    <!-- Server Stack Clay Icon Tile -->
-    <rect x="36" y="42" width="76" height="76" rx="16" fill="#1b1e26" stroke="#373c4a" stroke-width="1.2" filter="url(#clayElevation)" />
+  <!-- Main Floating Hero Section -->
+  <g class="retro-float">
+    <!-- Pixel Server Icon Container -->
+    <rect x="30" y="46" width="68" height="74" fill="#161922" stroke="#3d4354" stroke-width="2" />
+    <rect x="32" y="48" width="64" height="16" fill="#1f2430" />
+    <rect x="38" y="54" width="4" height="4" fill="#ffffff" />
+    <rect x="46" y="54" width="44" height="4" fill="#383e4d" />
     
-    <!-- Vector Server Layers Icon (Strict Monochrome) -->
-    <!-- Layer 1 -->
-    <rect x="49" y="55" width="50" height="12" rx="3" fill="#111318" stroke="#ffffff" stroke-width="1" stroke-opacity="0.9" />
-    <circle cx="56" cy="61" r="2" fill="#ffffff" />
-    <circle cx="63" cy="61" r="2" fill="#666b7a" />
-    <line x1="72" y1="61" x2="91" y2="61" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round" />
+    <rect x="32" y="67" width="64" height="16" fill="#1f2430" />
+    <rect x="38" y="73" width="4" height="4" fill="#ffffff" />
+    <rect x="46" y="73" width="44" height="4" fill="#383e4d" />
 
-    <!-- Layer 2 -->
-    <rect x="49" y="74" width="50" height="12" rx="3" fill="#111318" stroke="#ffffff" stroke-width="1" stroke-opacity="0.6" />
-    <circle cx="56" cy="80" r="2" fill="#ffffff" stroke-opacity="0.8" />
-    <circle cx="63" cy="80" r="2" fill="#666b7a" />
-    <line x1="72" y1="80" x2="87" y2="80" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round" />
+    <rect x="32" y="86" width="64" height="16" fill="#1f2430" />
+    <rect x="38" y="92" width="4" height="4" fill="#ffffff" />
+    <rect x="46" y="92" width="44" height="4" fill="#383e4d" />
 
-    <!-- Layer 3 -->
-    <rect x="49" y="93" width="50" height="12" rx="3" fill="#111318" stroke="#ffffff" stroke-width="1" stroke-opacity="0.3" />
-    <circle cx="56" cy="99" r="2" fill="#ffffff" stroke-opacity="0.5" />
-    <circle cx="63" cy="99" r="2" fill="#666b7a" />
-    <line x1="72" y1="99" x2="83" y2="99" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round" />
+    <rect x="32" y="105" width="64" height="13" fill="#141720" />
+    <text class="pixel-font" x="38" y="115" fill="#525866" font-size="8">[VBOX-7]</text>
 
-    <!-- Typography (Clean Monochrome) -->
-    <text x="130" y="72" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="800" letter-spacing="1">
-      SAMadali <tspan fill="#8a90a0" font-size="20" font-weight="500">IT 311</tspan>
+    <!-- Header Typography -->
+    <text class="pixel-font" x="115" y="72" fill="#ffffff" font-size="24" font-weight="900" letter-spacing="1">
+      SAMadali <tspan fill="#8a90a0" font-size="18" font-weight="600">[IT 311]</tspan>
     </text>
-    <text x="130" y="98" fill="#9da4b5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" letter-spacing="0.3">
-      System Administration Final Lab  •  Automated Provisioning &amp; Rubric Engine
+    <text class="pixel-font" x="115" y="96" fill="#9da4b5" font-size="11.5" font-weight="500">
+      > 1-Click Host Auto-Pilot &amp; In-VM Rubric Evaluator
     </text>
-
-    <!-- Animated Data Pipeline Stream -->
-    <line class="stream-line" x1="130" y1="116" x2="520" y2="116" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.35" />
+    <text class="pixel-font" x="115" y="114" fill="#64748b" font-size="10.5">
+      > Mode: Pure Soft Monochrome Retro  •  Status: READY
+    </text>
+    <rect class="cursor-blink" x="480" y="104" width="6" height="11" fill="#ffffff" />
   </g>
 
-  <!-- Live Rubric Status Badge (Monochrome Wireframe & Pulsing Reticle) -->
+  <!-- Retro Rubric Status Badge (Top Right) -->
   <g>
-    <rect x="690" y="42" width="174" height="34" rx="8" fill="#13151c" stroke="#ffffff" stroke-width="1" stroke-opacity="0.3" />
-    <circle class="pulse-ring" cx="709" cy="59" r="6" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.5" />
-    <circle cx="709" cy="59" r="3" fill="#ffffff" />
-    <text x="724" y="63" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', monospace" font-size="11" font-weight="700" letter-spacing="0.8">
-      RUBRIC: 50 / 50 PTS
-    </text>
+    <rect x="668" y="46" width="162" height="34" fill="#161922" stroke="#ffffff" stroke-width="1.5" />
+    <rect x="674" y="58" width="6" height="6" fill="#ffffff" />
+    <text class="pixel-font" x="688" y="68" fill="#ffffff" font-size="11" font-weight="bold">SCORE: 50/50 PTS</text>
   </g>
 
-  <!-- Bottom Monochrome Functional Tiles with Real Vector Icons (No Emojis) -->
-  <g transform="translate(36, 150)">
-    <!-- Tile 1: Auto-Pilot -->
-    <rect x="0" y="0" width="190" height="48" rx="8" fill="#151820" stroke="#2c303c" stroke-width="1" />
-    <!-- Lightning Bolt Vector Icon -->
-    <path d="M 24 16 L 16 26 L 22 26 L 20 34 L 28 24 L 22 24 Z" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round" />
-    <text x="36" y="24" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700">HOST AUTO-PILOT</text>
-    <text x="36" y="38" fill="#787e91" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">1-Click VM &amp; ISO build</text>
+  <!-- 4 Retro Function Badges (Bottom Row) -->
+  <g transform="translate(30, 145)">
+    <!-- Badge 1: 1-Click Auto-Pilot -->
+    <rect x="0" y="0" width="185" height="52" fill="#141720" stroke="#333745" stroke-width="1.5" />
+    <rect x="12" y="12" width="6" height="6" fill="#ffffff" />
+    <text class="pixel-font" x="26" y="24" fill="#ffffff" font-size="10" font-weight="bold">HOST AUTO-PILOT</text>
+    <text class="pixel-font" x="12" y="40" fill="#787e91" font-size="8.5">> 1-click VM deploy</text>
 
-    <!-- Tile 2: ReaLTaiizor Dark Interface -->
-    <rect x="206" y="0" width="190" height="48" rx="8" fill="#151820" stroke="#2c303c" stroke-width="1" />
-    <!-- Layout / Window Vector Icon -->
-    <rect x="220" y="17" width="14" height="14" rx="2" fill="none" stroke="#ffffff" stroke-width="1.2" />
-    <line x1="220" y1="22" x2="234" y2="22" stroke="#ffffff" stroke-width="1" />
-    <line x1="225" y1="22" x2="225" y2="31" stroke="#ffffff" stroke-width="1" />
-    <text x="242" y="24" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700">REALTAIIZOR UI</text>
-    <text x="242" y="38" fill="#787e91" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">Crown &amp; Poison controls</text>
+    <!-- Badge 2: ReaLTaiizor Dark Interface -->
+    <rect x="205" y="0" width="185" height="52" fill="#141720" stroke="#333745" stroke-width="1.5" />
+    <rect x="217" y="12" width="6" height="6" fill="#ffffff" />
+    <text class="pixel-font" x="231" y="24" fill="#ffffff" font-size="10" font-weight="bold">REALTAIIZOR UI</text>
+    <text class="pixel-font" x="217" y="40" fill="#787e91" font-size="8.5">> CrownForm layout</text>
 
-    <!-- Tile 3: TDD Verified Suite -->
-    <rect x="412" y="0" width="190" height="48" rx="8" fill="#151820" stroke="#2c303c" stroke-width="1" />
-    <!-- Checkmark Shield Vector Icon -->
-    <path d="M 427 16 L 434 19 L 434 26 C 434 30 427 33 427 33 C 427 33 420 30 420 26 L 420 19 Z" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round" />
-    <path d="M 424 24 L 426 26 L 430 22" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-    <text x="442" y="24" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700">TDD VERIFIED</text>
-    <text x="442" y="38" fill="#787e91" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">Full Pester test suite</text>
+    <!-- Badge 3: TDD Verified Suite -->
+    <rect x="410" y="0" width="185" height="52" fill="#141720" stroke="#333745" stroke-width="1.5" />
+    <rect x="422" y="12" width="6" height="6" fill="#ffffff" />
+    <text class="pixel-font" x="436" y="24" fill="#ffffff" font-size="10" font-weight="bold">TDD VERIFIED</text>
+    <text class="pixel-font" x="422" y="40" fill="#787e91" font-size="8.5">> 7/7 Pester tests</text>
 
-    <!-- Tile 4: Zero External Dependency -->
-    <rect x="618" y="0" width="210" height="48" rx="8" fill="#151820" stroke="#2c303c" stroke-width="1" />
-    <!-- Lock Vector Icon -->
-    <rect x="632" y="22" width="12" height="10" rx="1.5" fill="#ffffff" />
-    <path d="M 634 22 L 634 19 C 634 17 636 15 638 15 C 640 15 642 17 642 19 L 642 22" fill="none" stroke="#ffffff" stroke-width="1.2" />
-    <circle cx="638" cy="26" r="1" fill="#151820" />
-    <text x="652" y="24" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700">OFFLINE RUNTIME</text>
-    <text x="652" y="38" fill="#787e91" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">Zero network requirements</text>
+    <!-- Badge 4: Offline Runtime -->
+    <rect x="615" y="0" width="185" height="52" fill="#141720" stroke="#333745" stroke-width="1.5" />
+    <rect x="627" y="12" width="6" height="6" fill="#ffffff" />
+    <text class="pixel-font" x="641" y="24" fill="#ffffff" font-size="10" font-weight="bold">ZERO INTERNET</text>
+    <text class="pixel-font" x="627" y="40" fill="#787e91" font-size="8.5">> 100% offline exam</text>
   </g>
 </svg>
