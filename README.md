@@ -38,11 +38,11 @@
 
 ## Features & Highlights
 
-- **⚡ 1-Click Host Auto-Pilot**: One master click executes config save, ISO generation (`lab_scripts.iso`), VirtualBox VM provisioning with dual mounted ISOs and bridged NIC, and powers on your VM.
-- **🎨 Glassmorphic & Claymorphic UI**: Powered by `ReaLTaiizor` (CrownForm, CrownControls, PoisonTabControl) in a sleek high-contrast dark theme. Zero internet or NuGet download required (pre-packaged `.dll`).
-- **🛡️ 50-Point In-VM Rubric Evaluator (`verify_exam.ps1`)**: Automatically evaluates all 29 rubric criteria across all 6 Task Areas from the official `IT311_Final_Lab_Reviewer.pdf` before proctor evaluation.
-- **🧪 Test-Driven Development (TDD)**: Verified with a full Pester test suite (`tests/test_suite.ps1`) ensuring configuration safety, zero UI overlap, and syntax validity.
-- **📋 Dual-Track Companion**: Includes both automated scripts and a 100% manual cheat sheet with `Win + R` shortcuts (`sysdm.cpl`, `secpol.msc`, `lusrmgr.msc`, `printmanagement.msc`).
+- **1-Click Host Auto-Pilot**: One master click executes config save, ISO generation (`lab_scripts.iso`), VirtualBox VM provisioning with dual mounted ISOs and bridged NIC, and powers on your VM.
+- **Glassmorphic & Claymorphic UI**: Powered by `ReaLTaiizor` (CrownForm, CrownControls, PoisonTabControl) in a sleek high-contrast dark theme. Zero internet or NuGet download required (pre-packaged `.dll`).
+- **50-Point In-VM Rubric Evaluator (`verify_exam.ps1`)**: Automatically evaluates all 29 rubric criteria across all 6 Task Areas from the official `IT311_Final_Lab_Reviewer.pdf` before proctor evaluation.
+- **Test-Driven Development (TDD)**: Verified with a full Pester test suite (`tests/test_suite.ps1`) ensuring configuration safety, zero UI overlap, and syntax validity.
+- **Dual-Track Companion**: Includes both automated scripts and a 100% manual cheat sheet with `Win + R` shortcuts (`sysdm.cpl`, `secpol.msc`, `lusrmgr.msc`, `printmanagement.msc`).
 
 ---
 
@@ -92,16 +92,16 @@ powershell -NoProfile -STA -ExecutionPolicy Bypass -File .\launcher.ps1
 ```
 
 The launcher is divided into 4 clean tabs:
-1. **⚡ 1. Auto-Pilot & Config**:
-   - Master action button: `[▶ START FULL LAB AUTO-PILOT (BUILD, PACK & LAUNCH VM)]`.
+1. **1. Auto-Pilot & Config**:
+   - Master action button: `[START FULL LAB AUTO-PILOT (BUILD, PACK & LAUNCH VM)]`.
    - Section presets: `IT 3106 (3106@BatStateU)`, `IT 3107 (3107@BatStateU)`, `IT 3108 (3108@BatStateU)`.
    - Live stream output console with clear and logging controls.
    - Quick one-click clipboard copy buttons for guest commands.
-2. **📖 2. In-VM Hands-On Guide**:
+2. **2. In-VM Hands-On Guide**:
    - Clear, step-by-step instructions on what to click and enter inside Windows Server.
-3. **🛡️ 3. 100% Manual Cheat Sheet**:
+3. **3. 100% Manual Cheat Sheet**:
    - Fallback reference with `Win + R` shortcuts for every task area if scripts are restricted.
-4. **📋 4. 29-Step Rubric Checklist**:
+4. **4. 29-Step Rubric Checklist**:
    - Interactive checklist covering every point from Pages 11–13 of the reviewer with a live progress score.
 
 ---
