@@ -1,156 +1,143 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240" width="100%" height="240">
   <defs>
-    <!-- Background Gradient -->
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a0c10" />
-      <stop offset="50%" stop-color="#11141b" />
-      <stop offset="100%" stop-color="#07080a" />
+    <!-- Monochrome Dark Background -->
+    <linearGradient id="monoBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#14161b" />
+      <stop offset="100%" stop-color="#0c0d10" />
     </linearGradient>
 
-    <!-- Glass Glow Gradient -->
-    <linearGradient id="glassGlow" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.03" />
-      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.15" />
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.03" />
-    </linearGradient>
-
-    <!-- Clay Pill Gradient -->
-    <linearGradient id="clayPill" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#2a2e3d" />
-      <stop offset="100%" stop-color="#151822" />
-    </linearGradient>
-
-    <!-- Glowing Accent Gradient -->
-    <linearGradient id="accentGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00ffaa" />
-      <stop offset="100%" stop-color="#00a8ff" />
-    </linearGradient>
-
-    <!-- Clay Shadow Filter -->
-    <filter id="clayShadow" x="-10%" y="-10%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.7" />
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#ffffff" flood-opacity="0.08" />
-    </filter>
-
-    <!-- Subtle Particle Glow -->
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="blur" />
-      <feMerge>
-        <feMergeNode in="blur" />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
+    <!-- Clay Elevation Filter -->
+    <filter id="clayElevation" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.8" />
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#ffffff" flood-opacity="0.1" />
     </filter>
 
     <style>
-      @keyframes floatSlow {
+      @keyframes floatSoft {
         0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-6px); }
+        50% { transform: translateY(-4px); }
       }
-      @keyframes pulseBeam {
-        0%, 100% { opacity: 0.2; transform: scaleX(0.95); }
-        50% { opacity: 0.8; transform: scaleX(1.05); }
+      @keyframes dashAnim {
+        to { stroke-dashoffset: -32; }
       }
-      @keyframes radarSweep {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+      @keyframes beamPulse {
+        0%, 100% { opacity: 0.2; }
+        50% { opacity: 0.9; }
       }
-      @keyframes dashMove {
-        to { stroke-dashoffset: -40; }
+      @keyframes ringPulse {
+        0%, 100% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.15); opacity: 0.3; }
       }
-      @keyframes badgePulse {
-        0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #00ffaa); }
-        50% { transform: scale(1.04); filter: drop-shadow(0 0 8px #00ffaa); }
+      .floating-group {
+        animation: floatSoft 5s ease-in-out infinite;
       }
-      .floating-card {
-        animation: floatSlow 6s ease-in-out infinite;
-      }
-      .beam-line {
-        animation: pulseBeam 4s ease-in-out infinite;
-        transform-origin: center;
-      }
-      .running-dash {
+      .stream-line {
         stroke-dasharray: 6 6;
-        animation: dashMove 2s linear infinite;
+        animation: dashAnim 2s linear infinite;
       }
-      .live-badge {
-        animation: badgePulse 3s ease-in-out infinite;
-        transform-origin: 750px 50px;
+      .glow-beam {
+        animation: beamPulse 3s ease-in-out infinite;
+      }
+      .pulse-ring {
+        animation: ringPulse 2.5s ease-in-out infinite;
+        transform-origin: 730px 58px;
       }
     </style>
   </defs>
 
-  <!-- Outer Card with Glassmorphic Border -->
-  <rect x="10" y="10" width="880" height="220" rx="20" fill="url(#bgGrad)" stroke="#2b3140" stroke-width="1.5" />
-  
-  <!-- Subtle Grid Grid Lines -->
-  <g stroke="#ffffff" stroke-opacity="0.025" stroke-width="1">
-    <line x1="10" y1="65" x2="890" y2="65" />
-    <line x1="10" y1="120" x2="890" y2="120" />
-    <line x1="10" y1="175" x2="890" y2="175" />
-    <line x1="230" y1="10" x2="230" y2="230" />
-    <line x1="450" y1="10" x2="450" y2="230" />
-    <line x1="670" y1="10" x2="670" y2="230" />
+  <!-- Outer Glass Frame -->
+  <rect x="10" y="10" width="880" height="220" rx="16" fill="url(#monoBg)" stroke="#272b36" stroke-width="1.2" />
+
+  <!-- Technical Grid Pattern -->
+  <g stroke="#ffffff" stroke-opacity="0.03" stroke-width="1">
+    <line x1="10" y1="70" x2="890" y2="70" />
+    <line x1="10" y1="130" x2="890" y2="130" />
+    <line x1="260" y1="10" x2="260" y2="230" />
+    <line x1="620" y1="10" x2="620" y2="230" />
   </g>
 
-  <!-- Animated Top Glass Beam -->
-  <rect class="beam-line" x="150" y="10" width="600" height="2" fill="url(#glassGlow)" />
+  <!-- Top Glass Sheen Edge -->
+  <line class="glow-beam" x1="100" y1="10" x2="800" y2="10" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.6" stroke-linecap="round" />
 
-  <!-- Main Floating Glass/Clay Card Group -->
-  <g class="floating-card">
-    <!-- Center Hero Badge / Logo -->
-    <rect x="35" y="45" width="80" height="80" rx="18" fill="url(#clayPill)" stroke="#434c62" stroke-width="1.5" filter="url(#clayShadow)" />
+  <!-- Floating Hero Architecture Group -->
+  <g class="floating-group">
+    <!-- Server Stack Clay Icon Tile -->
+    <rect x="36" y="42" width="76" height="76" rx="16" fill="#1b1e26" stroke="#373c4a" stroke-width="1.2" filter="url(#clayElevation)" />
     
-    <!-- Server / Terminal Graphic -->
-    <rect x="47" y="60" width="56" height="14" rx="4" fill="#1b1f2b" stroke="#00ffaa" stroke-width="1" />
-    <circle cx="56" cy="67" r="2.5" fill="#00ffaa" />
-    <line x1="64" y1="67" x2="93" y2="67" stroke="#4a5568" stroke-width="2" stroke-linecap="round" />
+    <!-- Vector Server Layers Icon (Strict Monochrome) -->
+    <!-- Layer 1 -->
+    <rect x="49" y="55" width="50" height="12" rx="3" fill="#111318" stroke="#ffffff" stroke-width="1" stroke-opacity="0.9" />
+    <circle cx="56" cy="61" r="2" fill="#ffffff" />
+    <circle cx="63" cy="61" r="2" fill="#666b7a" />
+    <line x1="72" y1="61" x2="91" y2="61" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round" />
 
-    <rect x="47" y="80" width="56" height="14" rx="4" fill="#1b1f2b" stroke="#38bdf8" stroke-width="1" />
-    <circle cx="56" cy="87" r="2.5" fill="#38bdf8" />
-    <line x1="64" y1="87" x2="85" y2="87" stroke="#4a5568" stroke-width="2" stroke-linecap="round" />
+    <!-- Layer 2 -->
+    <rect x="49" y="74" width="50" height="12" rx="3" fill="#111318" stroke="#ffffff" stroke-width="1" stroke-opacity="0.6" />
+    <circle cx="56" cy="80" r="2" fill="#ffffff" stroke-opacity="0.8" />
+    <circle cx="63" cy="80" r="2" fill="#666b7a" />
+    <line x1="72" y1="80" x2="87" y2="80" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round" />
 
-    <rect x="47" y="100" width="56" height="14" rx="4" fill="#1b1f2b" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
-    <circle cx="56" cy="107" r="2.5" fill="#e2e8f0" />
-    <line x1="64" y1="107" x2="90" y2="107" stroke="#4a5568" stroke-width="2" stroke-linecap="round" />
+    <!-- Layer 3 -->
+    <rect x="49" y="93" width="50" height="12" rx="3" fill="#111318" stroke="#ffffff" stroke-width="1" stroke-opacity="0.3" />
+    <circle cx="56" cy="99" r="2" fill="#ffffff" stroke-opacity="0.5" />
+    <circle cx="63" cy="99" r="2" fill="#666b7a" />
+    <line x1="72" y1="99" x2="83" y2="99" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round" />
 
-    <!-- Typography: Title & Subtitle -->
-    <text x="135" y="75" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="800" letter-spacing="0.5">
-      SAMadali <tspan fill="#38bdf8" font-size="22" font-weight="600">IT 311</tspan>
+    <!-- Typography (Clean Monochrome) -->
+    <text x="130" y="72" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="800" letter-spacing="1">
+      SAMadali <tspan fill="#8a90a0" font-size="20" font-weight="500">IT 311</tspan>
     </text>
-    
-    <text x="135" y="102" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="500" letter-spacing="0.3">
-      Auto-Pilot Exam Toolkit  •  Glassmorphism + Claymorphism Architecture
+    <text x="130" y="98" fill="#9da4b5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" letter-spacing="0.3">
+      System Administration Final Lab  •  Automated Provisioning &amp; Rubric Engine
     </text>
 
-    <!-- Animated Data Path Pipeline -->
-    <path class="running-dash" d="M 135 125 L 530 125" fill="none" stroke="#38bdf8" stroke-opacity="0.5" stroke-width="2" />
+    <!-- Animated Data Pipeline Stream -->
+    <line class="stream-line" x1="130" y1="116" x2="520" y2="116" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.35" />
   </g>
 
-  <!-- Live 50-Point Status Capsule (Top Right) -->
-  <g class="live-badge">
-    <rect x="670" y="38" width="195" height="36" rx="18" fill="#121820" stroke="#00ffaa" stroke-width="1.2" />
-    <circle cx="692" cy="56" r="4.5" fill="#00ffaa" />
-    <text x="706" y="61" fill="#00ffaa" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', monospace" font-size="12" font-weight="700" letter-spacing="0.8">
-      RUBRIC SCORE: 50/50
+  <!-- Live Rubric Status Badge (Monochrome Wireframe & Pulsing Reticle) -->
+  <g>
+    <rect x="690" y="42" width="174" height="34" rx="8" fill="#13151c" stroke="#ffffff" stroke-width="1" stroke-opacity="0.3" />
+    <circle class="pulse-ring" cx="709" cy="59" r="6" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.5" />
+    <circle cx="709" cy="59" r="3" fill="#ffffff" />
+    <text x="724" y="63" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', monospace" font-size="11" font-weight="700" letter-spacing="0.8">
+      RUBRIC: 50 / 50 PTS
     </text>
   </g>
 
-  <!-- Bottom Pills (Key Features) -->
-  <g transform="translate(35, 155)">
-    <!-- Pill 1: 1-Click Auto-Pilot -->
-    <rect x="0" y="0" width="195" height="42" rx="12" fill="#161b26" stroke="#2e384d" stroke-width="1.2" />
-    <text x="16" y="26" fill="#38bdf8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="700">⚡ 1-CLICK AUTO-PILOT</text>
+  <!-- Bottom Monochrome Functional Tiles with Real Vector Icons (No Emojis) -->
+  <g transform="translate(36, 150)">
+    <!-- Tile 1: Auto-Pilot -->
+    <rect x="0" y="0" width="190" height="48" rx="8" fill="#151820" stroke="#2c303c" stroke-width="1" />
+    <!-- Lightning Bolt Vector Icon -->
+    <path d="M 24 16 L 16 26 L 22 26 L 20 34 L 28 24 L 22 24 Z" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round" />
+    <text x="36" y="24" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700">HOST AUTO-PILOT</text>
+    <text x="36" y="38" fill="#787e91" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">1-Click VM &amp; ISO build</text>
 
-    <!-- Pill 2: ReaLTaiizor Dark Glass -->
-    <rect x="210" y="0" width="190" height="42" rx="12" fill="#161b26" stroke="#2e384d" stroke-width="1.2" />
-    <text x="226" y="26" fill="#e2e8f0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="600">🎨 REALTAIIZOR GLASS</text>
+    <!-- Tile 2: ReaLTaiizor Dark Interface -->
+    <rect x="206" y="0" width="190" height="48" rx="8" fill="#151820" stroke="#2c303c" stroke-width="1" />
+    <!-- Layout / Window Vector Icon -->
+    <rect x="220" y="17" width="14" height="14" rx="2" fill="none" stroke="#ffffff" stroke-width="1.2" />
+    <line x1="220" y1="22" x2="234" y2="22" stroke="#ffffff" stroke-width="1" />
+    <line x1="225" y1="22" x2="225" y2="31" stroke="#ffffff" stroke-width="1" />
+    <text x="242" y="24" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700">REALTAIIZOR UI</text>
+    <text x="242" y="38" fill="#787e91" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">Crown &amp; Poison controls</text>
 
-    <!-- Pill 3: TDD Verified -->
-    <rect x="415" y="0" width="180" height="42" rx="12" fill="#161b26" stroke="#2e384d" stroke-width="1.2" />
-    <text x="431" y="26" fill="#00ffaa" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="600">🧪 100% TDD TESTED</text>
+    <!-- Tile 3: TDD Verified Suite -->
+    <rect x="412" y="0" width="190" height="48" rx="8" fill="#151820" stroke="#2c303c" stroke-width="1" />
+    <!-- Checkmark Shield Vector Icon -->
+    <path d="M 427 16 L 434 19 L 434 26 C 434 30 427 33 427 33 C 427 33 420 30 420 26 L 420 19 Z" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round" />
+    <path d="M 424 24 L 426 26 L 430 22" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+    <text x="442" y="24" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700">TDD VERIFIED</text>
+    <text x="442" y="38" fill="#787e91" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">Full Pester test suite</text>
 
-    <!-- Pill 4: Zero Internet / Offline -->
-    <rect x="610" y="0" width="220" height="42" rx="12" fill="#161b26" stroke="#2e384d" stroke-width="1.2" />
-    <text x="626" y="26" fill="#cbd5e1" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="600">🔒 ZERO INTERNET NEEDED</text>
+    <!-- Tile 4: Zero External Dependency -->
+    <rect x="618" y="0" width="210" height="48" rx="8" fill="#151820" stroke="#2c303c" stroke-width="1" />
+    <!-- Lock Vector Icon -->
+    <rect x="632" y="22" width="12" height="10" rx="1.5" fill="#ffffff" />
+    <path d="M 634 22 L 634 19 C 634 17 636 15 638 15 C 640 15 642 17 642 19 L 642 22" fill="none" stroke="#ffffff" stroke-width="1.2" />
+    <circle cx="638" cy="26" r="1" fill="#151820" />
+    <text x="652" y="24" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700">OFFLINE RUNTIME</text>
+    <text x="652" y="38" fill="#787e91" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9.5">Zero network requirements</text>
   </g>
 </svg>
