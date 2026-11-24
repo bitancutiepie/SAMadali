@@ -162,6 +162,7 @@ $tab4 = [System.Windows.Forms.TabPage]::new(); $tab4.Text = '  📋 4. 29-Step R
 [void]$tabSteps.TabPages.Add($tab3)
 [void]$tabSteps.TabPages.Add($tab4)
 
+# Card creation helper
 function New-TaiizorCard {
     param([int]$X, [int]$Y, [int]$W, [int]$H, [System.Windows.Forms.Control]$Parent)
     $p = [System.Windows.Forms.Panel]::new()
@@ -170,6 +171,7 @@ function New-TaiizorCard {
     $p.BackColor = $script:ColClayCard
     $p.ForeColor = $script:ColFrostWhite
     $p.BorderStyle = [System.Windows.Forms.BorderStyle]::None
+    $p.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
     $p.add_Paint({
         param($s, $e)
         $pen = [System.Drawing.Pen]::new($script:ColBorderGlass, 1)
@@ -313,16 +315,21 @@ $ttHelp.SetToolTip($btnDlIso, 'Open official Microsoft Windows Server 2022 Evalu
 
 # Console Output Card
 $cardLog = New-TaiizorCard -X 16 -Y 364 -W 1040 -H 240 -Parent $tab1
+$cardLog.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
 $lblLogHeader = [System.Windows.Forms.Label]::new(); $lblLogHeader.Text = 'LIVE EXECUTION CONSOLE'; $lblLogHeader.Font = New-AppFont 9 'Bold'; $lblLogHeader.ForeColor = $script:ColMutedGray; $lblLogHeader.Location = [System.Drawing.Point]::new(16, 8); $lblLogHeader.Size = [System.Drawing.Size]::new(300, 20); [void]$cardLog.Controls.Add($lblLogHeader)
 $btnClearLog = New-TaiizorButton -Text 'CLEAR' -X 945 -Y 6 -W 75 -H 24 -Parent $cardLog -Font $script:FontSmall
+$btnClearLog.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Right
 $btnClearLog.add_Click({ $script:rtbLog.Clear() })
 
-$script:rtbLog = [System.Windows.Forms.RichTextBox]::new(); $script:rtbLog.Location = [System.Drawing.Point]::new(16, 32); $script:rtbLog.Size = [System.Drawing.Size]::new(1004, 195); $script:rtbLog.BackColor = $script:ColDeepGlass; $script:rtbLog.ForeColor = $script:ColPureWhite; $script:rtbLog.Font = $script:FontCode; $script:rtbLog.ReadOnly = $true; $script:rtbLog.BorderStyle = [System.Windows.Forms.BorderStyle]::None; [void]$cardLog.Controls.Add($script:rtbLog)
+$script:rtbLog = [System.Windows.Forms.RichTextBox]::new(); $script:rtbLog.Location = [System.Drawing.Point]::new(16, 32); $script:rtbLog.Size = [System.Drawing.Size]::new(1004, 195); $script:rtbLog.BackColor = $script:ColDeepGlass; $script:rtbLog.ForeColor = $script:ColPureWhite; $script:rtbLog.Font = $script:FontCode; $script:rtbLog.ReadOnly = $true; $script:rtbLog.BorderStyle = [System.Windows.Forms.BorderStyle]::None
+$script:rtbLog.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
+[void]$cardLog.Controls.Add($script:rtbLog)
 
 # ===========================================================================
 #  TAB 2: IN-VM STEP-BY-STEP HANDS-ON GUIDE
 # ===========================================================================
 $cardInVmGuide = New-TaiizorCard -X 16 -Y 12 -W 1040 -H 590 -Parent $tab2
+$cardInVmGuide.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
 
 $lblGuideTitle = [System.Windows.Forms.Label]::new()
 $lblGuideTitle.Text = 'HANDS-ON GUIDE: WHAT YOU MUST DO INSIDE THE VIRTUAL MACHINE'
@@ -340,6 +347,7 @@ $rtbGuide.ReadOnly = $true
 $rtbGuide.BackColor = $script:ColDeepGlass
 $rtbGuide.ForeColor = $script:ColFrostWhite
 $rtbGuide.BorderStyle = [System.Windows.Forms.BorderStyle]::None
+$rtbGuide.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
 [void]$cardInVmGuide.Controls.Add($rtbGuide)
 
 $rtbGuide.Text = @"
@@ -398,9 +406,12 @@ STEP 3: MANDATORY HANDS-ON VERIFICATION (BEFORE CALLING INSTRUCTOR)
 #  TAB 3: 100% MANUAL CHEAT SHEET (RUBRIC BACKUP)
 # ===========================================================================
 $cardManual = New-TaiizorCard -X 16 -Y 12 -W 1040 -H 590 -Parent $tab3
+$cardManual.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
 $lblManTitle = [System.Windows.Forms.Label]::new(); $lblManTitle.Text = '100% MANUAL GUI STEPS & SHORTCUTS (IF AUTOMATION IS FORBIDDEN)'; $lblManTitle.Font = $script:FontSection; $lblManTitle.ForeColor = $script:ColPureWhite; $lblManTitle.Location = [System.Drawing.Point]::new(16, 12); $lblManTitle.Size = [System.Drawing.Size]::new(750, 22); [void]$cardManual.Controls.Add($lblManTitle)
 
-$rtbCheat = [System.Windows.Forms.RichTextBox]::new(); $rtbCheat.Location = [System.Drawing.Point]::new(16, 42); $rtbCheat.Size = [System.Drawing.Size]::new(1004, 530); $rtbCheat.Font = $script:FontCode; $rtbCheat.ReadOnly = $true; $rtbCheat.BackColor = $script:ColDeepGlass; $rtbCheat.ForeColor = $script:ColFrostWhite; $rtbCheat.BorderStyle = [System.Windows.Forms.BorderStyle]::None; [void]$cardManual.Controls.Add($rtbCheat)
+$rtbCheat = [System.Windows.Forms.RichTextBox]::new(); $rtbCheat.Location = [System.Drawing.Point]::new(16, 42); $rtbCheat.Size = [System.Drawing.Size]::new(1004, 530); $rtbCheat.Font = $script:FontCode; $rtbCheat.ReadOnly = $true; $rtbCheat.BackColor = $script:ColDeepGlass; $rtbCheat.ForeColor = $script:ColFrostWhite; $rtbCheat.BorderStyle = [System.Windows.Forms.BorderStyle]::None
+$rtbCheat.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
+[void]$cardManual.Controls.Add($rtbCheat)
 $rtbCheat.Text = @"
 ========================================================================================
   IT 311 FINAL LAB - 100% MANUAL GUI STEP-BY-STEP CHEAT SHEET (50 POINTS)
@@ -463,6 +474,7 @@ $rtbCheat.Text = @"
 #  TAB 4: 29-STEP REVIEWER RUBRIC CHECKLIST (Pages 11, 12, 13)
 # ===========================================================================
 $cardRubric = New-TaiizorCard -X 16 -Y 12 -W 1040 -H 590 -Parent $tab4
+$cardRubric.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
 $lblRubTitle = [System.Windows.Forms.Label]::new(); $lblRubTitle.Text = 'OFFICIAL 29-STEP EXAM-DAY RUBRIC CHECKLIST (PAGES 11, 12, 13)'; $lblRubTitle.Font = $script:FontSection; $lblRubTitle.ForeColor = $script:ColPureWhite; $lblRubTitle.Location = [System.Drawing.Point]::new(16, 12); $lblRubTitle.Size = [System.Drawing.Size]::new(750, 20); [void]$cardRubric.Controls.Add($lblRubTitle)
 
 $clbRubric = [System.Windows.Forms.CheckedListBox]::new()
@@ -473,7 +485,17 @@ $clbRubric.CheckOnClick = $true
 $clbRubric.BackColor = $script:ColDeepGlass
 $clbRubric.ForeColor = $script:ColFrostWhite
 $clbRubric.BorderStyle = [System.Windows.Forms.BorderStyle]::None
+$clbRubric.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
 [void]$cardRubric.Controls.Add($clbRubric)
+
+$lblScoreRubric = [System.Windows.Forms.Label]::new()
+$lblScoreRubric.Text = 'Checked: 0 / 29 Steps Complete'
+$lblScoreRubric.Font = New-AppFont 10 'Bold'
+$lblScoreRubric.ForeColor = $script:ColPureWhite
+$lblScoreRubric.Location = [System.Drawing.Point]::new(16, 545)
+$lblScoreRubric.Size = [System.Drawing.Size]::new(350, 24)
+$lblScoreRubric.Anchor = [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left
+[void]$cardRubric.Controls.Add($lblScoreRubric)
 
 $rubricItems = @(
     "1. VirtualBox > New > type VM name > tick Skip Unattended Installation (Task Area 01)",
@@ -510,14 +532,6 @@ $rubricItems = @(
 foreach ($item in $rubricItems) {
     [void]$clbRubric.Items.Add($item, $false)
 }
-
-$lblScoreRubric = [System.Windows.Forms.Label]::new()
-$lblScoreRubric.Text = 'Checked: 0 / 29 Steps Complete'
-$lblScoreRubric.Font = New-AppFont 10 'Bold'
-$lblScoreRubric.ForeColor = $script:ColPureWhite
-$lblScoreRubric.Location = [System.Drawing.Point]::new(16, 545)
-$lblScoreRubric.Size = [System.Drawing.Size]::new(350, 24)
-[void]$cardRubric.Controls.Add($lblScoreRubric)
 
 $clbRubric.add_ItemCheck({
     param($s, $e)
