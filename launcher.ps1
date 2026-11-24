@@ -208,8 +208,14 @@ $lblHeroTitle.Text = 'HOST AUTO-PILOT ENGINE'
 $lblHeroTitle.Font = $script:FontSection
 $lblHeroTitle.ForeColor = $script:ColPureWhite
 $lblHeroTitle.Location = [System.Drawing.Point]::new(16, 10)
-$lblHeroTitle.Size = [System.Drawing.Size]::new(400, 20)
+$lblHeroTitle.Size = [System.Drawing.Size]::new(350, 20)
 [void]$cardHero.Controls.Add($lblHeroTitle)
+
+# VM Manager Dropdown & Actions in Hero Card
+[void]([System.Windows.Forms.Label]::new() | ForEach-Object { $_.Text = 'VM MANAGER:'; $_.Font = $script:FontBold; $_.ForeColor = $script:ColMutedGray; $_.Location = [System.Drawing.Point]::new(370, 10); $_.Size = [System.Drawing.Size]::new(90, 20); $cardHero.Controls.Add($_); $_ })
+$comboVmList = [ReaLTaiizor.Controls.CrownComboBox]::new(); $comboVmList.Location = [System.Drawing.Point]::new(465, 8); $comboVmList.Size = [System.Drawing.Size]::new(200, 24); [void]$cardHero.Controls.Add($comboVmList)
+$btnRefreshVms = New-TaiizorButton -Text 'SCAN' -X 675 -Y 7 -W 65 -H 26 -Parent $cardHero -Font $script:FontSmall
+$btnDeleteSelectedVm = New-TaiizorButton -Text 'UNINSTALL VM' -X 748 -Y 7 -W 120 -H 26 -Parent $cardHero -Font $script:FontSmall
 
 $lblHeroDesc = [System.Windows.Forms.Label]::new()
 $lblHeroDesc.Text = 'Click the Master button below to execute everything on your laptop: Save Config -> Build VM -> Pack Scripts ISO -> Launch VirtualBox!'
@@ -834,7 +840,66 @@ $btnStepPack.add_Click({
     Invoke-PackIsoTask
 })
 
-$btnOpenVbox.add_Click({ Launch-VirtualBoxGui })
+function Refresh-VmList {
+    try {
+        $comboVmList.Items.Clear()
+        $candidates = @('D:\VirtualBox\VBoxManage.exe', 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe')
+        $vboxExe = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+        if (-not $vboxExe) {
+            $cmd = Get-Command VBoxManage -ErrorAction SilentlyContinue
+            if ($cmd) { $vboxExe = $cmd.Source }
+        }
+        if (-not $vboxExe) {
+            $comboVmList.Items.Add('(VBoxManage not found)')
+            $comboVmList.SelectedIndex = 0
+            return
+        }
+        $raw = & $vboxExe list vms
+        $vms = @()
+        foreach ($line in ($raw -split "[\r\n]+")) {
+            if ($line -match '^"([^"]+)"') { $vms += $Matches[1] }
+        }
+        if ($vms.Count -eq 0) {
+            $comboVmList.Items.Add('(No VMs found)')
+        } else {
+            foreach ($v in $vms) { [void]$comboVmList.Items.Add($v) }
+        }
+        $comboVmList.SelectedIndex = 0
+    } catch {
+        Add-LogLine ('[vm scan error] ' + $_.Exception.Message)
+    }
+}
+
+$btnRefreshVms.add_Click({ Refresh-VmList })
+
+$btnDeleteSelectedVm.add_Click({
+    $selected = [string]$comboVmList.SelectedItem
+    if (-not $selected -or $selected.StartsWith('(')) { return }
+    $confirm = [System.Windows.Forms.MessageBox]::Show("Are you sure you want to completely delete and uninstall VM '$selected'?`n`nThis will unregister the VM and permanently delete its virtual hard disk (.vdi).", "Confirm Delete VM", [System.Windows.Forms.MessageBoxButtons]::YesNo, [System.Windows.Forms.MessageBoxIcon]::Warning)
+    if ($confirm -ne [System.Windows.Forms.DialogResult]::Yes) { return }
+
+    try {
+        $candidates = @('D:\VirtualBox\VBoxManage.exe', 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe')
+        $vboxExe = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+        if (-not $vboxExe) {
+            $cmd = Get-Command VBoxManage -ErrorAction SilentlyContinue
+            if ($cmd) { $vboxExe = $cmd.Source }
+        }
+        if (-not $vboxExe) {
+            Add-LogLine '[error] VBoxManage not found.'
+            return
+        }
+        Add-LogLine "[cleanup] Powering off and deleting '$selected'..."
+        & $vboxExe controlvm $selected poweroff 2>$null
+        Start-Sleep -Milliseconds 600
+        $res = & $vboxExe unregistervm $selected --delete 2>&1
+        Add-LogLine "[cleanup] $res"
+        Add-LogLine "[cleanup] VM '$selected' uninstalled successfully."
+        Refresh-VmList
+    } catch {
+        Add-LogLine ('[delete error] ' + $_.Exception.Message)
+    }
+})
 
 $comboSection.add_SelectedIndexChanged({
     switch ($comboSection.SelectedIndex) {
@@ -907,6 +972,7 @@ $timer.add_Tick({
 
 $form.add_Shown({
     Load-ConfigIntoForm
+    Refresh-VmList
     $timer.Start()
 })
 
