@@ -116,16 +116,21 @@ D:\SAM_LAB/
 ├── ReaLTaiizor.dll             # High-performance WinForms theme assembly (.NET 4.8)
 ├── config.psd1                 # Central exam configuration (VM specs, names, accounts)
 ├── 1_build_vm.ps1              # Host builder for VirtualBox (Task Area 01)
-├── 1_build_vm.sh               # Bash fallback builder (Linux / macOS / WSL)
 ├── 2_configure_server.ps1      # Guest provisioner (Task Areas 03, 04, 05, 06)
 ├── 3_pack_iso.ps1              # Packages config + scripts + verifier into ISO
-├── 3_pack_iso.py               # Python ISO fallback builder
 ├── verify_exam.ps1             # 50-point rubric evaluator for Windows Server guest
-├── IT311_Final_Lab_Reviewer.pdf# Official BatStateU lab exam reviewer & rubric
-├── BEGINNER_GUIDE.md           # Beginner-friendly walkthrough with explanations
 ├── README.md                   # System documentation & reference
-└── tests/
-    └── test_suite.ps1          # Pester TDD test suite (config, syntax, UI layout)
+│
+├── docs/                       # Exam guides and official reviewer
+│   ├── BEGINNER_GUIDE.md       # Beginner-friendly walkthrough with explanations
+│   └── IT311_Final_Lab_Reviewer.pdf # Official BatStateU lab exam reviewer & rubric
+│
+├── fallback/                   # Multi-platform and non-PowerShell alternatives
+│   ├── 1_build_vm.sh           # Bash builder for Linux / macOS / WSL
+│   └── 3_pack_iso.py           # Python ISO packaging script
+│
+├── assets/                     # Monochrome vector SVGs
+└── tests/                      # Pester TDD test suite
 ```
 
 ---
