@@ -1,13 +1,16 @@
 # IT 311 Final Lab — Exam-Day Toolkit
 
-A parameterized toolkit for the **IT 311 System Administration Final Lab** (50 points): VirtualBox + Windows Server 2022, six task areas, one config file.
+A parameterized toolkit for the **IT 311 System Administration Final Lab** (50 points), built on **VirtualBox + Windows Server 2022**.
 
 > [!NOTE]
-> This toolkit was built and validated on **Windows 11 Home Single Language (64-bit)** with **VirtualBox 7.2.16** and the **Windows Server 2022 Evaluation ISO**. The host builder auto-detects your environment, so it works on other Windows hosts without editing scripts.
+> Built and validated on **Windows 11 Home Single Language (64-bit)** with **VirtualBox 7.2.16** and the **Windows Server 2022 Evaluation ISO**. The host builder auto-detects your environment, so it works on other Windows hosts without editing scripts.
 
 ## Table of contents
 
-- [Detected environment](#detected-environment)
+- [The big picture](#the-big-picture)
+- [Prerequisites](#prerequisites)
+- [Auto-detection](#auto-detection)
+- [Validated on](#validated-on)
 - [Files](#files)
 - [Quick start](#quick-start)
 - [Configuration reference](#configuration-reference)
@@ -17,23 +20,43 @@ A parameterized toolkit for the **IT 311 System Administration Final Lab** (50 p
 - [Troubleshooting](#troubleshooting)
 - [GUI launcher](#gui-launcher)
 
+---
+
+## The big picture
+
+```mermaid
+flowchart LR
+    A[Edit config.psd1] --> B[Pack lab_scripts.iso]
+    B --> C[Build VM<br/>Task Area 01]
+    C --> D[Install Server 2022<br/>manual]
+    D --> E[Run guest script<br/>Task Areas 03-06]
+    E --> F[Manual verification]
+    F --> G[Raise your hand]
+```
+
+You edit **one** file, click a few buttons (or run two commands), and the toolkit handles the tedious parts. You handle the parts only a human can.
+
+---
+
 ## Prerequisites
 
-- Windows host (the primary builder is PowerShell; a Bash builder is provided for Linux/macOS/WSL).
-- [VirtualBox](https://www.virtualbox.org/) 7.x with `VBoxManage` on `PATH` (or installed under `D:\VirtualBox\` / the registry default).
+- **Windows host** — the primary builder is PowerShell; a Bash builder is provided for Linux/macOS/WSL.
+- [**VirtualBox**](https://www.virtualbox.org/) 7.x with `VBoxManage` on `PATH` (or installed under `D:\VirtualBox\` / the registry default).
 - A **Windows Server 2022** installation ISO placed in this folder (any `*.iso`; the builder auto-detects the newest one). The `.gitignore` excludes `*.iso`, so each user supplies their own.
-- PowerShell 5.1+ (ships with Windows) or PowerShell 7+.
+- **PowerShell 5.1+** (ships with Windows) or PowerShell 7+.
 
 ## Auto-detection
 
-The toolkit is designed to run on any compatible host without editing scripts:
+The toolkit is designed to run on any compatible host **without editing scripts**:
 
-- **VirtualBox location** — searched in `D:\VirtualBox\`, the registry, and `PATH`.
-- **Guest OS type** — verified to be `Windows2022_64`; the script stops rather than creating the wrong guest.
-- **Windows Server ISO** — if `ISOPath` is blank, the newest `*.iso` in this folder is used; an explicit path overrides it.
-- **Bridged NIC** — if `BridgeAdapter` is blank, the active physical adapter is matched against `VBoxManage list bridgedifs` (VirtualBox/VMware/Hyper-V/VPN adapters are excluded).
-- **Default machine folder** — read from VirtualBox's own system properties.
-- **Script paths** — all scripts resolve files relative to their own folder (`$PSScriptRoot`), so the toolkit works from any location.
+| What | How it's found |
+|---|---|
+| VirtualBox location | Searched in `D:\VirtualBox\`, the registry, and `PATH`. |
+| Guest OS type | Verified to be `Windows2022_64`; the script stops rather than creating the wrong guest. |
+| Windows Server ISO | If `ISOPath` is blank, the newest `*.iso` in this folder is used; an explicit path overrides it. |
+| Bridged NIC | If `BridgeAdapter` is blank, the active physical adapter is matched against `VBoxManage list bridgedifs` (VirtualBox/VMware/Hyper-V/VPN adapters are excluded). |
+| Default machine folder | Read from VirtualBox's own system properties. |
+| Script paths | All scripts resolve files relative to their own folder (`$PSScriptRoot`), so the toolkit works from any location. |
 
 ## Validated on
 
@@ -68,11 +91,11 @@ powershell -ExecutionPolicy Bypass -File .\3_pack_iso.ps1
 powershell -ExecutionPolicy Bypass -File .\1_build_vm.ps1 -Start
 ```
 
-Or double-click `Start_Lab_UI.bat` to use the GUI.
+Prefer clicking? Double-click `Start_Lab_UI.bat` to use the GUI.
 
 ## Configuration reference
 
-`config.psd1` is the only file you edit on exam day. Every other script reads it.
+`config.psd1` is the **only** file you edit on exam day. Every other script reads it.
 
 | Field | Example | Notes |
 |---|---|---|
@@ -81,7 +104,7 @@ Or double-click `Start_Lab_UI.bat` to use the GUI.
 | `Disk_GB` | `30` | Dynamic VDI. Minimum 20 GB. |
 | `NetMode` | `bridged` | `bridged` / `nat` / `hostonly` / `intnet`. |
 | `BridgeAdapter` | *(blank)* | Leave blank to auto-detect your active NIC. |
-| `ISOPath` | `D:\SAM_LAB\SERVER_EVAL_x64FRE_en-us.iso` | Full path to the Server 2022 ISO. |
+| `ISOPath` | *(blank)* | Leave blank to auto-detect the newest `*.iso` in this folder. |
 | `ServerName` | `Lab-Server-01` | Max 15 characters. Letters, numbers, hyphens only. |
 | `SectionAdminPassword` | `3106@BatStateU` | Format: `<section>@BatStateU`. |
 | `BaseSharePath` | `C:\Shares` | Where department folders are created. |
@@ -90,60 +113,72 @@ Or double-click `Start_Lab_UI.bat` to use the GUI.
 | `PrinterPort` | `LPT1:` | `LPT1:` or `FILE:`. |
 | `PrinterName` | `Office-Printer` | Must match the sheet exactly. |
 
+> [!IMPORTANT]
+> Double-check VM name, RAM, disk, server name, password, share names, and printer name against the instruction sheet. One typo can cost points.
+
 ## Exam-day workflow
 
-You can do everything from the **GUI launcher** or from the command line. Both paths use the same `config.psd1`.
+Everything can be done from the **GUI launcher** or the command line. Both use the same `config.psd1`.
 
+> [!TIP]
 > **GUI path (recommended):** double-click `Start_Lab_UI.bat`. It reads `config.psd1`, lets you edit and save every field, and runs the build/pack steps with live output. See [GUI launcher](#gui-launcher).
 
 ### Step 0 — Edit `config.psd1`
+
 Confirm these match the instruction sheet **exactly**: VM name, RAM, disk, server name, password, share names, printer name. (Or use the launcher's `[ SAVE CONFIG ]` button.)
 
 ### Step 1 — Build the VM (Task Area 01)
+
 GUI: click `[ 1. BUILD VM ]`. CLI:
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\1_build_vm.ps1 -Start
 ```
-The builder creates the VM, sets RAM/disk/network, attaches the ISO, and prints a PASS/FAIL verification summary. It does **not** run an unattended install.
+
+The builder creates the VM, sets RAM/disk/network, attaches the ISO, and prints a **PASS/FAIL** verification summary. It does **not** run an unattended install.
 
 ### Step 2 — Install Windows Server 2022 (manual)
+
 1. Start the VM. Press any key to boot from CD.
 2. Choose language → **Install now**.
-3. Select **Windows Server 2022 Standard Evaluation (Desktop Experience)**. (Not Server Core.)
+3. Select **Windows Server 2022 Standard Evaluation (Desktop Experience)**. Not Server Core.
 4. Accept license → **Custom: Install Windows only** → select the disk → Next.
 5. Set the Administrator password. Log in as Administrator.
 
 ### Step 3 — Mount the ISO and run the guest script (Task Areas 03–06)
+
 1. On the host, make sure `lab_scripts.iso` exists (GUI: `[ 2. PACK ISO ]`, or run `3_pack_iso.ps1`).
 2. In the VM: **Devices → Optical Drives → Choose disk image** → `lab_scripts.iso`.
-3. Open PowerShell as Administrator:
+3. Open PowerShell **as Administrator**:
    ```powershell
    Set-ExecutionPolicy Bypass -Scope Process -Force
    D:\2_configure_server.ps1
    ```
    The script renames the server, prompts for a reboot, and exits. **This is expected.**
-4. After reboot, log in, re-mount the ISO, and run the script again. This pass completes password policy, users, shares, ACLs, printer, and verification.
+4. After reboot, log in, re-mount the ISO, and run the script again. This second pass completes password policy, users, shares, ACLs, printer, and verification.
 
 > [!TIP]
 > Click `[ 3. COPY GUEST COMMAND ]` in the launcher to copy the guest command to your clipboard.
 
 ### Step 4 — Manual verification
+
 See [Manual steps you must do yourself](#manual-steps-you-must-do-yourself).
 
 ### Step 5 — Leave the VM running
-Do not shut down. Raise your hand for grading.
+
+**Do not shut down.** Raise your hand for grading.
 
 ## Manual steps you must do yourself
 
-These cannot be automated and are checked by the grader:
+These can't be automated and are checked by the grader:
 
-1. **Select "Desktop Experience"** during Windows setup.
-2. **Log in once as IT, HR, and Manager** so Windows creates their profiles. Then re-run `D:\2_configure_server.ps1` so shortcuts land in the real profile folders.
-3. **Verify desktop shortcuts** — each user sees only their own share shortcut plus `Public_Share`. No other departments.
-4. **Verify "Access is denied"** — log in as IT and open `\\Lab-Server-01\HR_Share` and `\\Lab-Server-01\Manager_Share`. Both must deny access.
-5. **Verify the printer** — `Office-Printer` appears at `\\Lab-Server-01`.
-6. **Verify credential files** — `it.txt`, `hr.txt`, `manager.txt`, `public.txt` contain the correct passwords.
-7. **Leave the VM running** and raise your hand.
+- Select **"Desktop Experience"** during Windows setup.
+- **Log in once as IT, HR, and Manager** so Windows creates their profiles. Then re-run `D:\2_configure_server.ps1` so shortcuts land in the real profile folders.
+- **Verify desktop shortcuts** — each user sees only their own share shortcut plus `Public_Share`. No other departments.
+- **Verify "Access is denied"** — log in as IT and open `\\Lab-Server-01\HR_Share` and `\\Lab-Server-01\Manager_Share`. Both must deny access.
+- **Verify the printer** — `Office-Printer` appears at `\\Lab-Server-01`.
+- **Verify credential files** — `it.txt`, `hr.txt`, `manager.txt`, `public.txt` contain the correct passwords.
+- **Leave the VM running** and raise your hand.
 
 ## Common mistakes to avoid
 
@@ -182,10 +217,14 @@ These cannot be automated and are checked by the grader:
 
 Double-click `Start_Lab_UI.bat` to open the monochrome control panel (`launcher.ps1`). No external dependencies — only Windows PowerShell and WinForms.
 
-- On launch it reads `config.psd1` and fills every field.
-- `[ SAVE CONFIG ]` writes the form values back to `config.psd1` (department passwords are preserved).
-- `[ 1. BUILD VM ]` saves the config, runs `1_build_vm.ps1`, and streams output into the console box.
-- `[ 2. PACK ISO ]` saves the config, runs `3_pack_iso.ps1`, and streams output into the console box.
-- `[ 3. COPY GUEST COMMAND ]` copies the guest command to the clipboard.
-- `[ GUIDE ]` opens a step-by-step wizard inside the launcher.
-- Hotkeys: `Ctrl+S` save, `F5` build, `F6` pack. `CLEAR` empties the console.
+| Control | What it does |
+|---|---|
+| Launch | Reads `config.psd1` and fills every field. |
+| `[ SAVE CONFIG ]` | Writes the form values back to `config.psd1` (department passwords are preserved). |
+| `[ 1. BUILD VM ]` | Saves the config, runs `1_build_vm.ps1`, and streams output into the console box. |
+| `[ 2. PACK ISO ]` | Saves the config, runs `3_pack_iso.ps1`, and streams output into the console box. |
+| `[ 3. COPY GUEST COMMAND ]` | Copies the guest command to the clipboard. |
+| `[ GUIDE ]` | Opens a step-by-step wizard inside the launcher. |
+| `CLEAR` | Empties the console. |
+
+Hotkeys: `Ctrl+S` save, `F5` build, `F6` pack.
