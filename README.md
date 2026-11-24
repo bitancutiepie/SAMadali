@@ -47,20 +47,20 @@ A fully automated, streamlined toolkit for the **IT 311 System Administration Fi
 
 ```mermaid
 flowchart TD
-    subgraph Host["💻 Laptop Host (Pre-Exam)"]
-        A[Start_Lab_UI.bat] --> B[ReaLTaiizor Dark GUI]
-        B -->|Click [▶ START FULL LAB AUTO-PILOT]| C[Save config.psd1]
-        C --> D[Pack lab_scripts.iso<br/>IMAPI2FS]
-        D --> E[Build & Register VM<br/>1_build_vm.ps1]
-        E --> F[Launch VirtualBox GUI]
+    subgraph Host["Laptop Host (Pre-Exam)"]
+        A["Start_Lab_UI.bat"] --> B["ReaLTaiizor Dark GUI"]
+        B -->|"Click Start Full Lab Auto-Pilot"| C["Save config.psd1"]
+        C --> D["Pack lab_scripts.iso<br/>IMAPI2FS"]
+        D --> E["Build & Register VM<br/>1_build_vm.ps1"]
+        E --> F["Launch VirtualBox GUI"]
     end
 
-    subgraph Guest["🖥️ Guest Virtual Machine (During Exam)"]
-        F --> G[Manual OS Setup: Desktop Experience<br/>Set password: &lt;section&gt;@BatStateU]
-        G --> H[Run D:\2_configure_server.ps1<br/>Pass 1: Rename & Reboot]
-        H --> I[Run D:\2_configure_server.ps1<br/>Pass 2: Roles, Users, Shares, Printer]
-        I --> J[Profile Init: Sign into IT, HR, Manager]
-        J --> K[Run D:\verify_exam.ps1<br/>50 / 50 Score Verification]
+    subgraph Guest["Guest Virtual Machine (During Exam)"]
+        F --> G["Manual OS Setup: Desktop Experience<br/>Set password: &lt;section&gt;@BatStateU"]
+        G --> H["Run D:\2_configure_server.ps1<br/>Pass 1: Rename & Reboot"]
+        H --> I["Run D:\2_configure_server.ps1<br/>Pass 2: Roles, Users, Shares, Printer"]
+        I --> J["Profile Init: Sign into IT, HR, Manager"]
+        J --> K["Run D:\verify_exam.ps1<br/>50 / 50 Score Verification"]
     end
 ```
 
