@@ -6,7 +6,7 @@
 
     # ---- Task Area 01: Virtual Machine --------------------------------
     # Exact VM name from the instruction sheet. Spelling counts.
-    VMName               = 'Lab_Exam_VM'
+    VMName               = 'Practice_Lab_VM'
 
     # Memory in MB. 1 GB = 1024 MB. Rubric minimum: 2048 MB.
     # Recommended: 4096 MB.
@@ -17,7 +17,7 @@
     Disk_GB              = 30
 
     # nat | bridged | hostonly | intnet
-    NetMode              = 'bridged'
+    NetMode              = 'hostonly'
 
     # Leave blank to auto-detect the active physical host NIC.
     # Set an exact VBoxManage bridged-interface name to override,

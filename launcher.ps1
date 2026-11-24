@@ -371,126 +371,206 @@ $rtbGuide.BorderStyle = [System.Windows.Forms.BorderStyle]::None
 $rtbGuide.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
 [void]$cardInVmGuide.Controls.Add($rtbGuide)
 
-# 4 Procedural Steps (Shown one at a time)
-$script:WizardSteps = @(
-@"
-========================================================================================
-  STEP 1 OF 4: INSTALL WINDOWS SERVER 2022 (8 POINTS)
-========================================================================================
+# Rich Step Formatter for Procedural Guide
+function Append-GuideBlock {
+    param(
+        [System.Windows.Forms.RichTextBox]$rtb,
+        [string]$text,
+        [System.Drawing.Color]$color,
+        [System.Drawing.Font]$font,
+        [int]$indent = 0
+    )
+    $rtb.SelectionStart = $rtb.TextLength
+    $rtb.SelectionLength = 0
+    $rtb.SelectionColor = $color
+    $rtb.SelectionFont = $font
+    $rtb.SelectionIndent = $indent
+    $rtb.AppendText($text)
+}
 
-WHAT TO DO RIGHT NOW:
-  1. VirtualBox has started your VM with the Windows Server ISO and lab_scripts.iso mounted.
-  2. Click inside the black VM screen immediately and press ANY KEY to boot from CD.
-  3. Leave Language / Keyboard defaults as-is -> Click [ Install now ].
+$script:FontTitle   = New-Object System.Drawing.Font('Segoe UI Semibold', 11, [System.Drawing.FontStyle]::Bold)
+$script:FontSection = New-Object System.Drawing.Font('Segoe UI Semibold', 9.5, [System.Drawing.FontStyle]::Bold)
+$script:FontBody    = New-Object System.Drawing.Font('Segoe UI', 9.5, [System.Drawing.FontStyle]::Regular)
+$script:FontCode    = New-Object System.Drawing.Font('Consolas', 9.5, [System.Drawing.FontStyle]::Regular)
+$script:FontNote    = New-Object System.Drawing.Font('Segoe UI', 8.5, [System.Drawing.FontStyle]::Italic)
 
-CRITICAL CHECKPOINT (DO NOT MISS THIS):
-  4. Edition Selection:
-     [X] Windows Server 2022 Standard Evaluation (Desktop Experience)
-     * CAUTION: Do NOT select Server Core! Server Core has no GUI and you will lose points.
-
-  5. Type of installation:
-     Click [ Custom: Install Microsoft Server Operating System only (advanced) ].
-  6. Select 'Drive 0 Unallocated Space' (30.0 GB) -> Click [ Next ] and wait ~4 minutes for install.
-
-FINISHING INSTALLATION:
-  7. When Windows asks to 'Customize settings' / Administrator password:
-     Type your section password: 3106@BatStateU (or 3107@BatStateU / 3108@BatStateU).
-  8. Unlock the screen:
-     Press Right Ctrl + Del on your keyboard, then log in as Administrator.
-
->> When you are logged into the Windows Server desktop, click [ DONE / NEXT ▶ ] above!
-"@,
-
-@"
-========================================================================================
-  STEP 2 OF 4: SERVER RENAME & REBOOT (TASK AREA 04 - 5 POINTS)
-========================================================================================
-
-WHAT TO DO RIGHT NOW:
-  1. Inside the Windows Server VM, click the Start menu -> type 'powershell'.
-  2. Right-click 'Windows PowerShell' -> select [ Run as administrator ].
-  3. Paste or type this command to run Pass 1:
-     Set-ExecutionPolicy Bypass -Scope Process -Force; D:\2_configure_server.ps1
-
-WHAT HAPPENS AUTOMATICALLY:
-  - The script checks the computer name.
-  - It changes the name to 'Lab-Server-01' (exact name required by reviewer).
-  - It prompts you: 'Reboot now to apply new name? [Y/N]'
-
-YOUR ACTION:
-  4. Press Y and hit Enter to restart the server.
-  5. Wait ~30 seconds for the server to finish restarting.
-
->> When the server restarts and you are ready to log back in, click [ DONE / NEXT ▶ ] above!
-"@,
-
-@"
-========================================================================================
-  STEP 3 OF 4: ROLES, USERS, SHARES & PRINTER (TASK AREAS 03, 05, 06 - 29 POINTS)
-========================================================================================
-
-WHAT TO DO RIGHT NOW:
-  1. Log back in as Administrator with your section password (e.g. 3106@BatStateU).
-  2. Open PowerShell as Administrator again.
-  3. Run the exact same command:
-     Set-ExecutionPolicy Bypass -Scope Process -Force; D:\2_configure_server.ps1
-
-WHAT IS AUTOMATED ON THIS RUN:
-  • Local Security Policy: Password complexity ENABLED, Minimum length 8.
-  • Local Users Created: IT, HR, Manager with exact passwords from reviewer.
-  • Passwords set to NEVER EXPIRE.
-  • File Server and iSCSI Target Server roles installed.
-  • C:\Shares\ created with IT_Share, HR_Share, Manager_Share, Public_Share.
-  • NTFS ACL isolation applied:
-    - IT can only access IT_Share + Public_Share
-    - HR can only access HR_Share + Public_Share
-    - Manager can only access Manager_Share + Public_Share
-  • Text files generated with correct credentials (it.txt, hr.txt, manager.txt, public.txt).
-  • Print Server installed with shared 'Office-Printer' on LPT1:.
-
->> When the green 'PASS 2 COMPLETE' message appears in PowerShell, click [ DONE / NEXT ▶ ]!
-"@,
-
-@"
-========================================================================================
-  STEP 4 OF 4: PROFILE INITIALIZATION & 50-POINT VERIFICATION (16 POINTS)
-========================================================================================
-
-MANDATORY PROFILE INITIALIZATION (Windows only creates desktop folders after first login):
-  1. Click Start -> Click Administrator icon -> Click [ Sign out ].
-  2. Press Right Ctrl + Del -> Click 'Other user':
-     - Log in as: IT       (Password: Tech#Dept2026)    -> Wait for desktop -> Sign out
-     - Log in as: HR       (Password: People#Dept2026)  -> Wait for desktop -> Sign out
-     - Log in as: Manager  (Password: Lead#Dept2026)    -> Wait for desktop -> Sign out
-  3. Log back in as Administrator.
-  4. Run the guest script one last time in PowerShell:
-     D:\2_configure_server.ps1
-     (This places the network shortcuts on the newly created user desktops).
-
-FINAL AUTOMATED 50-POINT AUDIT:
-  5. Inside PowerShell, run the evaluator:
-     D:\verify_exam.ps1
-  6. Confirm the console prints:
-     ======================================================================
-       TOTAL SCORE: 50 / 50 POINTS (100% EXAM READY!)
-     ======================================================================
-
-HANDS-ON CHECK BEFORE CALLING PROCTOR:
-  • Log in as IT -> File Explorer -> type: \\Lab-Server-01\HR_Share
-  • Confirm it says 'Access is denied' (proves rubric security is active).
-  • LEAVE THE VM RUNNING. Do NOT shut it down.
-  • Raise your hand for instructor evaluation!
-"@
+$script:WizardStepsData = @(
+    @{
+        Badge = "STEP 1 OF 4"; Points = "8 POINTS"
+        Title = "INSTALL WINDOWS SERVER 2022"
+        Sections = @(
+            @{
+                Header = "WHAT TO DO RIGHT NOW"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#38bdf8")
+                Items = @(
+                    "1. VirtualBox has started your VM with the Windows ISO and lab_scripts.iso mounted.",
+                    "2. Click inside the black VM screen immediately and press ANY KEY to boot from CD/DVD.",
+                    "3. Leave Language, Time, and Keyboard defaults as-is -> Click [ Install now ]."
+                )
+            },
+            @{
+                Header = "CRITICAL CHECKPOINT (DO NOT MISS THIS)"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#fbbf24")
+                Items = @(
+                    "4. Edition Selection:",
+                    "   Select: 'Windows Server 2022 Standard Evaluation (Desktop Experience)'",
+                    "   * CAUTION: Do NOT select Server Core! Server Core has no GUI and loses points.",
+                    "5. Type of installation: Click [ Custom: Install Microsoft Server Operating System only ].",
+                    "6. Select 'Drive 0 Unallocated Space' (30.0 GB) -> Click [ Next ] and wait ~4 minutes."
+                )
+            },
+            @{
+                Header = "FINISHING INSTALLATION & FIRST LOGIN"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#4ade80")
+                Items = @(
+                    "7. When prompted for Administrator password:",
+                    "   Type your section password: 3106@BatStateU (or 3107@BatStateU / 3108@BatStateU).",
+                    "8. Unlock the screen: Press Right Ctrl + Del, then log in as Administrator."
+                )
+            }
+        )
+        NextTip = "When you are logged into the Windows Server desktop, click [ DONE / NEXT ▶ ] above."
+    },
+    @{
+        Badge = "STEP 2 OF 4"; Points = "5 POINTS"
+        Title = "SERVER RENAME & REBOOT (TASK AREA 04)"
+        Sections = @(
+            @{
+                Header = "WHAT TO DO RIGHT NOW"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#38bdf8")
+                Items = @(
+                    "1. Inside the Windows Server VM, click the Start menu -> type 'powershell'.",
+                    "2. Right-click 'Windows PowerShell' -> select [ Run as administrator ].",
+                    "3. Paste or type this command to run Pass 1:",
+                    "   Set-ExecutionPolicy Bypass -Scope Process -Force; D:\2_configure_server.ps1"
+                )
+            },
+            @{
+                Header = "WHAT HAPPENS AUTOMATICALLY"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#94a3b8")
+                Items = @(
+                    "• The script checks the computer name and changes it to 'Lab-Server-01'.",
+                    "• Prompts: 'Reboot now to apply new name? [Y/N]'."
+                )
+            },
+            @{
+                Header = "YOUR ACTION"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#fbbf24")
+                Items = @(
+                    "4. Press Y and hit Enter to restart the server.",
+                    "5. Wait ~30 seconds for the server to finish rebooting."
+                )
+            }
+        )
+        NextTip = "When the server finishes restarting and you are ready to log in, click [ DONE / NEXT ▶ ] above."
+    },
+    @{
+        Badge = "STEP 3 OF 4"; Points = "29 POINTS"
+        Title = "ROLES, USERS, SHARES & PRINTER (TASK AREAS 03, 05, 06)"
+        Sections = @(
+            @{
+                Header = "WHAT TO DO RIGHT NOW"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#38bdf8")
+                Items = @(
+                    "1. Log back in as Administrator with your section password (e.g. 3106@BatStateU).",
+                    "2. Open PowerShell as Administrator again.",
+                    "3. Run the exact same command to execute Pass 2:",
+                    "   Set-ExecutionPolicy Bypass -Scope Process -Force; D:\2_configure_server.ps1"
+                )
+            },
+            @{
+                Header = "WHAT IS AUTOMATED ON THIS RUN"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#4ade80")
+                Items = @(
+                    "• Password Policy: Complexity ENABLED, Minimum length 8.",
+                    "• Local Users: IT, HR, Manager with exact passwords from reviewer (Never Expire).",
+                    "• Server Roles: File Server, iSCSI Target Server, and Print Server.",
+                    "• Folders & Shares: C:\Shares\ (IT_Share, HR_Share, Manager_Share, Public_Share).",
+                    "• NTFS ACL Isolation: IT, HR, Manager restricted strictly to their department.",
+                    "• Credentials Files: it.txt, hr.txt, manager.txt, public.txt with login credentials.",
+                    "• Shared Printer: 'Office-Printer' installed with Generic driver on LPT1:."
+                )
+            }
+        )
+        NextTip = "When the green 'PASS 2 COMPLETE' message appears in PowerShell, click [ DONE / NEXT ▶ ] above."
+    },
+    @{
+        Badge = "STEP 4 OF 4"; Points = "16 POINTS"
+        Title = "PROFILE INITIALIZATION & 50-POINT VERIFICATION"
+        Sections = @(
+            @{
+                Header = "MANDATORY PROFILE INITIALIZATION"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#fbbf24")
+                Items = @(
+                    "1. Click Start -> Click Administrator icon -> Click [ Sign out ].",
+                    "2. Press Right Ctrl + Del -> Click 'Other user':",
+                    "   • Log in as: IT       (Password: Tech#Dept2026)    -> Wait for desktop -> Sign out",
+                    "   • Log in as: HR       (Password: People#Dept2026)  -> Wait for desktop -> Sign out",
+                    "   • Log in as: Manager  (Password: Lead#Dept2026)    -> Wait for desktop -> Sign out",
+                    "3. Log back in as Administrator.",
+                    "4. Run the guest script one last time in PowerShell: D:\2_configure_server.ps1",
+                    "   (This deploys network share shortcuts to each user's private Desktop)."
+                )
+            },
+            @{
+                Header = "FINAL AUTOMATED 50-POINT AUDIT"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#4ade80")
+                Items = @(
+                    "5. Inside PowerShell, run the evaluator: D:\verify_exam.ps1",
+                    "6. Confirm the console prints: TOTAL SCORE: 50 / 50 POINTS (100% EXAM READY!)"
+                )
+            },
+            @{
+                Header = "HANDS-ON CHECK BEFORE CALLING PROCTOR"
+                Color = [System.Drawing.ColorTranslator]::FromHtml("#38bdf8")
+                Items = @(
+                    "• Log in as IT -> File Explorer -> type: \\Lab-Server-01\HR_Share",
+                    "• Confirm it shows 'Access is denied' (proves rubric security isolation is working).",
+                    "• LEAVE THE VM RUNNING. Do NOT shut it down.",
+                    "• Raise your hand for instructor evaluation!"
+                )
+            }
+        )
+        NextTip = "Congratulations! You have completed all exam criteria. Keep the VM running."
+    }
 )
 
 $script:CurrentWizardIndex = 0
 
 function Update-WizardView {
     $idx = $script:CurrentWizardIndex
-    $rtbGuide.Text = $script:WizardSteps[$idx]
-    $lblStepIndicator.Text = "STEP $($idx + 1) OF $($script:WizardSteps.Count)"
+    $step = $script:WizardStepsData[$idx]
+    
+    $rtbGuide.SuspendLayout()
+    $rtbGuide.Clear()
+    
+    # Header badge & title
+    Append-GuideBlock -rtb $rtbGuide -text "[$($step.Badge) - $($step.Points)]`n" -color ([System.Drawing.ColorTranslator]::FromHtml("#94a3b8")) -font $script:FontNote -indent 0
+    Append-GuideBlock -rtb $rtbGuide -text "$($step.Title)`n`n" -color ([System.Drawing.ColorTranslator]::FromHtml("#ffffff")) -font $script:FontTitle -indent 0
+    
+    # Sections
+    foreach ($sec in $step.Sections) {
+        Append-GuideBlock -rtb $rtbGuide -text "▶ $($sec.Header)`n" -color $sec.Color -font $script:FontSection -indent 0
+        foreach ($item in $sec.Items) {
+            $isCode = ($item -match "Set-ExecutionPolicy" -or $item -match "D:\\")
+            $font = if ($isCode) { $script:FontCode } else { $script:FontBody }
+            $color = if ($isCode) { [System.Drawing.ColorTranslator]::FromHtml("#38bdf8") } else { [System.Drawing.ColorTranslator]::FromHtml("#e2e8f0") }
+            Append-GuideBlock -rtb $rtbGuide -text "  $item`n" -color $color -font $font -indent 10
+        }
+        Append-GuideBlock -rtb $rtbGuide -text "`n" -color ([System.Drawing.Color]::White) -font $script:FontBody -indent 0
+    }
+    
+    # Bottom callout tip
+    Append-GuideBlock -rtb $rtbGuide -text "» $($step.NextTip)`n" -color ([System.Drawing.ColorTranslator]::FromHtml("#64748b")) -font $script:FontNote -indent 0
+    
+    $rtbGuide.SelectionStart = 0
+    $rtbGuide.SelectionLength = 0
+    $rtbGuide.ScrollToCaret()
+    $rtbGuide.ResumeLayout()
+    
+    $lblStepIndicator.Text = "STEP $($idx + 1) OF $($script:WizardStepsData.Count)"
     $btnPrevStep.Enabled = ($idx -gt 0)
-    if ($idx -eq ($script:WizardSteps.Count - 1)) {
+    if ($idx -eq ($script:WizardStepsData.Count - 1)) {
         $btnNextStep.Text = 'FINISHED (50/50) ✓'
         $lblStepIndicator.ForeColor = $script:ColActiveGreen
     } else {
