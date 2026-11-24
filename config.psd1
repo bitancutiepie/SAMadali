@@ -25,8 +25,9 @@
     BridgeAdapter   = ''
 
     # Windows Server 2022 ISO. Leave blank to auto-detect the newest
-    # *.iso in this folder. Auto-filled with the ISO found on this PC.
-    ISOPath         = 'D:\SAM_LAB\SERVER_EVAL_x64FRE_en-us.iso'
+    # *.iso in this folder (recommended for portability). Set an explicit
+    # path only if multiple ISOs are present.
+    ISOPath         = ''
 
     # ---- Task Area 04: Server Rename ----------------------------------
     # Max 15 characters. Letters, numbers, hyphens. No spaces or underscores.

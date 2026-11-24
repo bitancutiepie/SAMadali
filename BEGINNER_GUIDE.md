@@ -49,7 +49,7 @@ Open `D:\SAM_LAB\config.psd1` in Notepad and change the values between the singl
 | `Disk_GB` | `30` | Dynamic VDI. Minimum 20 GB. |
 | `NetMode` | `bridged` | `bridged` / `nat` / `hostonly` / `intnet`. |
 | `BridgeAdapter` | *(blank)* | Leave blank to auto-detect your Wi-Fi NIC. |
-| `ISOPath` | `D:\SAM_LAB\SERVER_EVAL_x64FRE_en-us.iso` | Full path to the Server 2022 ISO. |
+| `ISOPath` | *(blank)* | Leave blank to auto-detect the newest `*.iso` in this folder (recommended). |
 | `ServerName` | `Lab-Server-01` | **Max 15 characters.** Letters, numbers, hyphens only. No spaces or underscores. |
 | `SectionAdminPassword` | `3106@BatStateU` | Format: `<section>@BatStateU` (capital B, S, U). |
 | `BaseSharePath` | `C:\Shares` | Where department folders will be created. |

@@ -17,16 +17,32 @@ A parameterized toolkit for the **IT 311 System Administration Final Lab** (50 p
 - [Troubleshooting](#troubleshooting)
 - [GUI launcher](#gui-launcher)
 
-## Detected environment
+## Prerequisites
+
+- Windows host (the primary builder is PowerShell; a Bash builder is provided for Linux/macOS/WSL).
+- [VirtualBox](https://www.virtualbox.org/) 7.x with `VBoxManage` on `PATH` (or installed under `D:\VirtualBox\` / the registry default).
+- A **Windows Server 2022** installation ISO placed in this folder (any `*.iso`; the builder auto-detects the newest one). The `.gitignore` excludes `*.iso`, so each user supplies their own.
+- PowerShell 5.1+ (ships with Windows) or PowerShell 7+.
+
+## Auto-detection
+
+The toolkit is designed to run on any compatible host without editing scripts:
+
+- **VirtualBox location** — searched in `D:\VirtualBox\`, the registry, and `PATH`.
+- **Guest OS type** — verified to be `Windows2022_64`; the script stops rather than creating the wrong guest.
+- **Windows Server ISO** — if `ISOPath` is blank, the newest `*.iso` in this folder is used; an explicit path overrides it.
+- **Bridged NIC** — if `BridgeAdapter` is blank, the active physical adapter is matched against `VBoxManage list bridgedifs` (VirtualBox/VMware/Hyper-V/VPN adapters are excluded).
+- **Default machine folder** — read from VirtualBox's own system properties.
+- **Script paths** — all scripts resolve files relative to their own folder (`$PSScriptRoot`), so the toolkit works from any location.
+
+## Validated on
 
 | Item | Value |
 |---|---|
 | Host OS | Windows 11 Home Single Language, 64-bit |
-| VirtualBox | 7.2.16 at `D:\VirtualBox\VBoxManage.exe` |
-| Guest OS type | `Windows2022_64` (supported by this VirtualBox build) |
-| ISO | `D:\SAM_LAB\SERVER_EVAL_x64FRE_en-us.iso` |
-| Active host NIC | `Intel(R) Wi-Fi 6 AX201 160MHz` (auto-detected for bridged mode) |
-| Working folder | `D:\SAM_LAB` |
+| VirtualBox | 7.2.16 |
+| Guest OS type | `Windows2022_64` |
+| Active host NIC | `Intel(R) Wi-Fi 6 AX201 160MHz` (auto-detected) |
 
 ## Files
 

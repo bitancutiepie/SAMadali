@@ -63,7 +63,7 @@ Fields to fill:
   Disk_GB             = 30
   NetMode             = bridged
   BridgeAdapter       = (leave blank)
-  ISOPath             = D:\SAM_LAB\SERVER_EVAL_x64FRE_en-us.iso
+  ISOPath             = (leave blank to auto-detect the newest *.iso in this folder)
   ServerName          = Lab-Server-01  (max 15 chars, no spaces)
   SectionAdminPassword= 3106@BatStateU
   BaseSharePath       = C:\Shares
