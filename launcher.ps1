@@ -332,22 +332,37 @@ $script:rtbLog.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Wi
 [void]$cardLog.Controls.Add($script:rtbLog)
 
 # ===========================================================================
-#  TAB 2: IN-VM STEP-BY-STEP HANDS-ON GUIDE
+#  TAB 2: IN-VM STEP-BY-STEP HANDS-ON GUIDE (PROCEDURAL WIZARD)
 # ===========================================================================
 $cardInVmGuide = New-TaiizorCard -X 16 -Y 12 -W 1040 -H 590 -Parent $tab2
 $cardInVmGuide.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
 
 $lblGuideTitle = [System.Windows.Forms.Label]::new()
-$lblGuideTitle.Text = 'HANDS-ON GUIDE: WHAT YOU MUST DO INSIDE THE VIRTUAL MACHINE'
+$lblGuideTitle.Text = 'STEP-BY-STEP IN-VM GUIDE'
 $lblGuideTitle.Font = $script:FontSection
 $lblGuideTitle.ForeColor = $script:ColPureWhite
 $lblGuideTitle.Location = [System.Drawing.Point]::new(16, 12)
-$lblGuideTitle.Size = [System.Drawing.Size]::new(750, 22)
+$lblGuideTitle.Size = [System.Drawing.Size]::new(350, 22)
 [void]$cardInVmGuide.Controls.Add($lblGuideTitle)
 
+# Wizard Step Counter Badge
+$lblStepIndicator = [System.Windows.Forms.Label]::new()
+$lblStepIndicator.Text = 'STEP 1 OF 4'
+$lblStepIndicator.Font = New-AppFont 9.5 'Bold'
+$lblStepIndicator.ForeColor = $script:ColActiveGreen
+$lblStepIndicator.Location = [System.Drawing.Point]::new(370, 14)
+$lblStepIndicator.Size = [System.Drawing.Size]::new(180, 20)
+[void]$cardInVmGuide.Controls.Add($lblStepIndicator)
+
+# Navigation Buttons
+$btnPrevStep = New-TaiizorButton -Text '◀ PREVIOUS' -X 720 -Y 8 -W 120 -H 30 -Parent $cardInVmGuide -Font $script:FontSmall
+$btnNextStep = New-TaiizorButton -Text 'DONE / NEXT ▶' -X 850 -Y 8 -W 150 -H 30 -Parent $cardInVmGuide -Font $script:FontSmall
+$btnPrevStep.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Right
+$btnNextStep.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Right
+
 $rtbGuide = [System.Windows.Forms.RichTextBox]::new()
-$rtbGuide.Location = [System.Drawing.Point]::new(16, 42)
-$rtbGuide.Size = [System.Drawing.Size]::new(1004, 530)
+$rtbGuide.Location = [System.Drawing.Point]::new(16, 46)
+$rtbGuide.Size = [System.Drawing.Size]::new(1004, 526)
 $rtbGuide.Font = $script:FontCode
 $rtbGuide.ReadOnly = $true
 $rtbGuide.BackColor = $script:ColDeepGlass
@@ -356,57 +371,151 @@ $rtbGuide.BorderStyle = [System.Windows.Forms.BorderStyle]::None
 $rtbGuide.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
 [void]$cardInVmGuide.Controls.Add($rtbGuide)
 
-$rtbGuide.Text = @"
+# 4 Procedural Steps (Shown one at a time)
+$script:WizardSteps = @(
+@"
 ========================================================================================
-  IT 311 FINAL LAB - IN-VM STEP-BY-STEP HANDS-ON GUIDE (34 PTS AUTOMATED + 16 MANUAL)
+  STEP 1 OF 4: INSTALL WINDOWS SERVER 2022 (8 POINTS)
 ========================================================================================
 
-STEP 1: INSTALL WINDOWS SERVER 2022 (8 pts)
-  1. VirtualBox starts your VM automatically with both the Windows ISO and lab_scripts.iso.
-  2. Click inside the VM window and immediately press ANY key to boot from CD/DVD.
-  3. Language/Time/Keyboard -> Click 'Install now'.
-  4. ⚠️ CRITICAL OS SELECTION:
-     Select: 'Windows Server 2022 Standard Evaluation (Desktop Experience)'
-     * Do NOT select Server Core (Server Core has no GUI and you will lose points!).
-  5. Select 'Custom: Install Microsoft Server Operating System only (advanced)'.
-  6. Select unallocated Drive 0 (30 GB) -> Click Next and wait for install.
-  7. When prompted for Administrator Password:
-     Enter your section password: 3106@BatStateU (or 3107@BatStateU / 3108@BatStateU).
-  8. Log in: Press Host Key (Right Ctrl + Del) and enter your password.
+WHAT TO DO RIGHT NOW:
+  1. VirtualBox has started your VM with the Windows Server ISO and lab_scripts.iso mounted.
+  2. Click inside the black VM screen immediately and press ANY KEY to boot from CD.
+  3. Leave Language / Keyboard defaults as-is -> Click [ Install now ].
 
-STEP 2: RUN THE AUTOMATION SCRIPT INSIDE THE VM (34 pts)
-  1. Open PowerShell as Administrator inside the VM.
-  2. Paste this 1-line command (click 'COPY GUEST COMMAND' on Tab 1 to copy):
+CRITICAL CHECKPOINT (DO NOT MISS THIS):
+  4. Edition Selection:
+     [X] Windows Server 2022 Standard Evaluation (Desktop Experience)
+     * CAUTION: Do NOT select Server Core! Server Core has no GUI and you will lose points.
+
+  5. Type of installation:
+     Click [ Custom: Install Microsoft Server Operating System only (advanced) ].
+  6. Select 'Drive 0 Unallocated Space' (30.0 GB) -> Click [ Next ] and wait ~4 minutes for install.
+
+FINISHING INSTALLATION:
+  7. When Windows asks to 'Customize settings' / Administrator password:
+     Type your section password: 3106@BatStateU (or 3107@BatStateU / 3108@BatStateU).
+  8. Unlock the screen:
+     Press Right Ctrl + Del on your keyboard, then log in as Administrator.
+
+>> When you are logged into the Windows Server desktop, click [ DONE / NEXT ▶ ] above!
+"@,
+
+@"
+========================================================================================
+  STEP 2 OF 4: SERVER RENAME & REBOOT (TASK AREA 04 - 5 POINTS)
+========================================================================================
+
+WHAT TO DO RIGHT NOW:
+  1. Inside the Windows Server VM, click the Start menu -> type 'powershell'.
+  2. Right-click 'Windows PowerShell' -> select [ Run as administrator ].
+  3. Paste or type this command to run Pass 1:
      Set-ExecutionPolicy Bypass -Scope Process -Force; D:\2_configure_server.ps1
-  3. FIRST RUN (Task Area 04: Server Rename):
-     - The script checks the hostname, renames it to 'Lab-Server-01', and prompts for reboot.
-     - Press Y to reboot.
-  4. SECOND RUN (Task Areas 03, 05, 06):
-     - Log back in as Administrator.
-     - Open PowerShell as Administrator again and run the same command:
-       Set-ExecutionPolicy Bypass -Scope Process -Force; D:\2_configure_server.ps1
-     - This automatically creates:
-       • Password policy (Complexity ENABLED, Length 8)
-       • Local Users: IT, HR, Manager with exact passwords from reviewer
-       • File Server & iSCSI Target Server roles
-       • C:\Shares\IT_Share, HR_Share, Manager_Share, Public_Share with isolated NTFS permissions
-       • Credential text files (it.txt, hr.txt, manager.txt, public.txt)
-       • Desktop shortcuts for each user
-       • Print Server role, Generic driver on LPT1:, and shared 'Office-Printer'.
 
-STEP 3: MANDATORY HANDS-ON VERIFICATION (BEFORE CALLING INSTRUCTOR)
-  1. Sign out of Administrator -> Sign in once as IT, then HR, then Manager.
-     (Windows only creates their user profile folders on first sign-in!).
-  2. Re-run the guest script once more so desktop shortcuts land in their private Desktop folders.
-  3. Test Access Denied:
-     - While logged in as IT, open File Explorer -> type: \\Lab-Server-01\HR_Share
-     - It MUST display 'Access is denied' (proves NTFS permissions work!).
-  4. Run the 50-Point Exam Verifier:
-     In PowerShell, run: D:\verify_exam.ps1
-     Ensure it outputs: TOTAL SCORE: 50 / 50 POINTS!
-  5. LEAVE VM RUNNING and raise your hand for your instructor!
+WHAT HAPPENS AUTOMATICALLY:
+  - The script checks the computer name.
+  - It changes the name to 'Lab-Server-01' (exact name required by reviewer).
+  - It prompts you: 'Reboot now to apply new name? [Y/N]'
+
+YOUR ACTION:
+  4. Press Y and hit Enter to restart the server.
+  5. Wait ~30 seconds for the server to finish restarting.
+
+>> When the server restarts and you are ready to log back in, click [ DONE / NEXT ▶ ] above!
+"@,
+
+@"
 ========================================================================================
+  STEP 3 OF 4: ROLES, USERS, SHARES & PRINTER (TASK AREAS 03, 05, 06 - 29 POINTS)
+========================================================================================
+
+WHAT TO DO RIGHT NOW:
+  1. Log back in as Administrator with your section password (e.g. 3106@BatStateU).
+  2. Open PowerShell as Administrator again.
+  3. Run the exact same command:
+     Set-ExecutionPolicy Bypass -Scope Process -Force; D:\2_configure_server.ps1
+
+WHAT IS AUTOMATED ON THIS RUN:
+  • Local Security Policy: Password complexity ENABLED, Minimum length 8.
+  • Local Users Created: IT, HR, Manager with exact passwords from reviewer.
+  • Passwords set to NEVER EXPIRE.
+  • File Server and iSCSI Target Server roles installed.
+  • C:\Shares\ created with IT_Share, HR_Share, Manager_Share, Public_Share.
+  • NTFS ACL isolation applied:
+    - IT can only access IT_Share + Public_Share
+    - HR can only access HR_Share + Public_Share
+    - Manager can only access Manager_Share + Public_Share
+  • Text files generated with correct credentials (it.txt, hr.txt, manager.txt, public.txt).
+  • Print Server installed with shared 'Office-Printer' on LPT1:.
+
+>> When the green 'PASS 2 COMPLETE' message appears in PowerShell, click [ DONE / NEXT ▶ ]!
+"@,
+
+@"
+========================================================================================
+  STEP 4 OF 4: PROFILE INITIALIZATION & 50-POINT VERIFICATION (16 POINTS)
+========================================================================================
+
+MANDATORY PROFILE INITIALIZATION (Windows only creates desktop folders after first login):
+  1. Click Start -> Click Administrator icon -> Click [ Sign out ].
+  2. Press Right Ctrl + Del -> Click 'Other user':
+     - Log in as: IT       (Password: Tech#Dept2026)    -> Wait for desktop -> Sign out
+     - Log in as: HR       (Password: People#Dept2026)  -> Wait for desktop -> Sign out
+     - Log in as: Manager  (Password: Lead#Dept2026)    -> Wait for desktop -> Sign out
+  3. Log back in as Administrator.
+  4. Run the guest script one last time in PowerShell:
+     D:\2_configure_server.ps1
+     (This places the network shortcuts on the newly created user desktops).
+
+FINAL AUTOMATED 50-POINT AUDIT:
+  5. Inside PowerShell, run the evaluator:
+     D:\verify_exam.ps1
+  6. Confirm the console prints:
+     ======================================================================
+       TOTAL SCORE: 50 / 50 POINTS (100% EXAM READY!)
+     ======================================================================
+
+HANDS-ON CHECK BEFORE CALLING PROCTOR:
+  • Log in as IT -> File Explorer -> type: \\Lab-Server-01\HR_Share
+  • Confirm it says 'Access is denied' (proves rubric security is active).
+  • LEAVE THE VM RUNNING. Do NOT shut it down.
+  • Raise your hand for instructor evaluation!
 "@
+)
+
+$script:CurrentWizardIndex = 0
+
+function Update-WizardView {
+    $idx = $script:CurrentWizardIndex
+    $rtbGuide.Text = $script:WizardSteps[$idx]
+    $lblStepIndicator.Text = "STEP $($idx + 1) OF $($script:WizardSteps.Count)"
+    $btnPrevStep.Enabled = ($idx -gt 0)
+    if ($idx -eq ($script:WizardSteps.Count - 1)) {
+        $btnNextStep.Text = 'FINISHED (50/50) ✓'
+        $lblStepIndicator.ForeColor = $script:ColActiveGreen
+    } else {
+        $btnNextStep.Text = 'DONE / NEXT ▶'
+        $lblStepIndicator.ForeColor = $script:ColFrostWhite
+    }
+}
+
+$btnPrevStep.add_Click({
+    if ($script:CurrentWizardIndex -gt 0) {
+        $script:CurrentWizardIndex--
+        Update-WizardView
+    }
+})
+
+$btnNextStep.add_Click({
+    if ($script:CurrentWizardIndex -lt ($script:WizardSteps.Count - 1)) {
+        $script:CurrentWizardIndex++
+        Update-WizardView
+    } else {
+        $tabSteps.SelectedTab = $tab4
+    }
+})
+
+Update-WizardView
 
 # ===========================================================================
 #  TAB 3: 100% MANUAL CHEAT SHEET (RUBRIC BACKUP)
