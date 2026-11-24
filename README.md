@@ -46,12 +46,13 @@
 
 ---
 
-## Prerequisites
+## Prerequisites & Downloads
 
 - **Host OS**: Windows 10 / 11 (64-bit).
-- **Hypervisor**: [Oracle VirtualBox 7.x](https://www.virtualbox.org/) installed (`VBoxManage` auto-detected in default directories and `PATH`).
-- **Windows Server 2022 ISO**: Place `SERVER_EVAL_x64FRE_en-us.iso` (or any Server 2022 ISO) directly in this directory.
-- **PowerShell**: Windows PowerShell 5.1 (ships with Windows) or PowerShell 7+.
+- **Hypervisor**: [Oracle VirtualBox 7.x](https://www.virtualbox.org/wiki/Downloads) (Free / Open Source — `VBoxManage` auto-detected in default paths).
+- **Windows Server 2022 ISO**: [Microsoft Evaluation Center Download](https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022) (Download the 64-bit ISO and save directly into `D:\SAM_LAB`).
+- **PowerShell**: Windows PowerShell 5.1 (built into Windows) or PowerShell 7+.
+- **GUI Dependency**: `ReaLTaiizor.dll` is already locally packaged in this repository (100% offline).
 
 ---
 

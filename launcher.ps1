@@ -284,9 +284,32 @@ $tbMgrFile   = [ReaLTaiizor.Controls.CrownTextBox]::new(); $tbMgrFile.Text = 'ma
 $tbPubFolder = [ReaLTaiizor.Controls.CrownTextBox]::new(); $tbPubFolder.Text = 'Public_Share'
 $tbPubFile   = [ReaLTaiizor.Controls.CrownTextBox]::new(); $tbPubFile.Text = 'public.txt'
 
-$btnSaveAllConfig = New-TaiizorButton -Text '💾 SAVE CONFIG ONLY' -X 16 -Y 180 -W 220 -H 36 -Parent $cardConfig
-$btnCopyCmdHero = New-TaiizorButton -Text '📋 COPY GUEST COMMAND (FOR VM)' -X 250 -Y 180 -W 270 -H 36 -Parent $cardConfig
-$btnCopyVerifyHero = New-TaiizorButton -Text '📋 COPY VERIFIER CMD (50 PTS)' -X 535 -Y 180 -W 260 -H 36 -Parent $cardConfig
+$btnSaveAllConfig = New-TaiizorButton -Text 'SAVE CONFIG' -X 16 -Y 180 -W 150 -H 36 -Parent $cardConfig
+$btnCopyCmdHero = New-TaiizorButton -Text 'COPY GUEST CMD' -X 174 -Y 180 -W 185 -H 36 -Parent $cardConfig
+$btnCopyVerifyHero = New-TaiizorButton -Text 'COPY VERIFIER CMD' -X 367 -Y 180 -W 185 -H 36 -Parent $cardConfig
+$btnDlVbox = New-TaiizorButton -Text 'GET VIRTUALBOX' -X 560 -Y 180 -W 175 -H 36 -Parent $cardConfig
+$btnDlIso = New-TaiizorButton -Text 'GET SERVER ISO' -X 743 -Y 180 -W 175 -H 36 -Parent $cardConfig
+$btnDlVbox.add_Click({ [System.Diagnostics.Process]::Start('https://www.virtualbox.org/wiki/Downloads') })
+$btnDlIso.add_Click({ [System.Diagnostics.Process]::Start('https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022') })
+
+# Tooltips for user guidance on inputs and download buttons
+$ttHelp = [System.Windows.Forms.ToolTip]::new()
+$ttHelp.InitialDelay = 200
+$ttHelp.AutoPopDelay = 10000
+$ttHelp.SetToolTip($comboSection, 'Choose class section. Automatically presets the rubric SectionAdminPassword (<section>@BatStateU).')
+$ttHelp.SetToolTip($tbAdminPass, 'Administrator password. Format: <section>@BatStateU (e.g. 3106@BatStateU).')
+$ttHelp.SetToolTip($tbServerName, 'Target computer name (Task Area 04). Max 15 chars, alphanumeric and hyphens only (e.g. Lab-Server-01).')
+$ttHelp.SetToolTip($tbVMName, 'VirtualBox virtual machine name (Task Area 01). Must match instruction sheet.')
+$ttHelp.SetToolTip($tbRAM, 'VM memory in MB. Rubric minimum: 2048 MB. Recommended: 4096 MB.')
+$ttHelp.SetToolTip($tbDisk, 'Dynamic VDI hard disk size in GB. Rubric minimum: 20 GB. Recommended: 30 GB.')
+$ttHelp.SetToolTip($comboNet, 'Network mode. Must be "bridged" per rubric requirements.')
+$ttHelp.SetToolTip($comboPort, 'Printer port for Office-Printer. Use LPT1: or FILE:.')
+$ttHelp.SetToolTip($tbBridge, 'Leave blank to auto-detect your physical host network adapter.')
+$ttHelp.SetToolTip($tbISO, 'Path to Windows Server 2022 evaluation ISO. Auto-detected if in project folder.')
+$ttHelp.SetToolTip($tbBasePath, 'Base folder on guest C: drive where department shares are provisioned (C:\Shares).')
+$ttHelp.SetToolTip($tbPrinterName, 'Name and share name of the printer (Task Area 06, Office-Printer).')
+$ttHelp.SetToolTip($btnDlVbox, 'Open official Oracle VirtualBox download page in your browser.')
+$ttHelp.SetToolTip($btnDlIso, 'Open official Microsoft Windows Server 2022 Evaluation download page.')
 
 # Console Output Card
 $cardLog = New-TaiizorCard -X 16 -Y 364 -W 1040 -H 240 -Parent $tab1
